@@ -1,0 +1,12 @@
+log/*.log
+tmp/**/*
+tmp/*
+.DS_Store
+doc/api
+doc/app
+# ignore object files
+*.o
+# ignore bundle files
+*.bundle
+public/javascripts/cache
+public/stylesheets/cache
