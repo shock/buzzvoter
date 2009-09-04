@@ -1,0 +1,34 @@
+<h1>Listing polls</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Url</th>
+    <th>Question</th>
+    <th>Answers</th>
+    <th>Ending time</th>
+    <th>Results reply</th>
+    <th>Reply message</th>
+    <th>Owner</th>
+  </tr>
+
+<% @polls.each do |poll| %>
+  <tr>
+    <td><%=h poll.name %></td>
+    <td><%=h poll.url %></td>
+    <td><%=h poll.question %></td>
+    <td><%=h poll.answers %></td>
+    <td><%=h poll.ending_time %></td>
+    <td><%=h poll.results_reply %></td>
+    <td><%=h poll.reply_message %></td>
+    <td><%=h poll.owner %></td>
+    <td><%= link_to 'Show', poll %></td>
+    <td><%= link_to 'Edit', edit_poll_path(poll) %></td>
+    <td><%= link_to 'Destroy', poll, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New poll', new_poll_path %>

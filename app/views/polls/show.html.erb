@@ -1,0 +1,43 @@
+<p>
+  <b>Name:</b>
+  <%=h @poll.name %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%=h @poll.url %>
+</p>
+
+<p>
+  <b>Question:</b>
+  <%=h @poll.question %>
+</p>
+
+<p>
+  <b>Answers:</b>
+  <%=h @poll.answers %>
+</p>
+
+<p>
+  <b>Ending time:</b>
+  <%=h @poll.ending_time %>
+</p>
+
+<p>
+  <b>Results reply:</b>
+  <%=h @poll.results_reply %>
+</p>
+
+<p>
+  <b>Reply message:</b>
+  <%=h @poll.reply_message %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @poll.owner %>
+</p>
+
+
+<%= link_to 'Edit', edit_poll_path(@poll) %> |
+<%= link_to 'Back', polls_path %>
