@@ -2,10 +2,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :polls
   
   map.resource :user_session
-  # map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
+  map.root :controller => "home", :action => "index"
 
   map.resource :account, :controller => "users"
   map.resources :users
+  
+  map.connect 'login', :controller => 'user_sessions', :action => 'new'
+
+  map.connect 'logout', :controller => 'user_sessions', :action => 'destroy'
+
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -48,4 +53,5 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing the them or commenting them out if you're using named routes and resources.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  map.connect ':id', :controller=>"polls", :action=>"show"
 end

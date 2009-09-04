@@ -1,44 +1,15 @@
 <h1>Editing poll</h1>
-
+<hr/>
 <% form_for(@poll) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :url %><br />
-    <%= f.text_field :url %>
-  </p>
-  <p>
-    <%= f.label :question %><br />
-    <%= f.text_field :question %>
-  </p>
-  <p>
-    <%= f.label :answers %><br />
-    <%= f.text_area :answers %>
-  </p>
-  <p>
-    <%= f.label :ending_time %><br />
-    <%= f.datetime_select :ending_time %>
-  </p>
-  <p>
-    <%= f.label :results_reply %><br />
-    <%= f.check_box :results_reply %>
-  </p>
-  <p>
-    <%= f.label :reply_message %><br />
-    <%= f.text_field :reply_message %>
-  </p>
-  <p>
-    <%= f.label :owner %><br />
-    <%= f.text_field :owner %>
-  </p>
+  <%= render :partial => "form", :object => f %>
+
+
   <p>
     <%= f.submit 'Update' %>
+    <%= link_to 'Cancel', "/" %>
   </p>
 <% end %>
 
 <%= link_to 'Show', @poll %> |
-<%= link_to 'Back', polls_path %>

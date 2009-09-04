@@ -1,43 +1,21 @@
-<p>
-  <b>Name:</b>
+<h1>
   <%=h @poll.name %>
-</p>
-
+</h1>
 <p>
-  <b>Url:</b>
-  <%=h @poll.url %>
+  <b>Ends:</b>
+  <%=h @poll.ending_time %>
 </p>
-
+<hr/>
 <p>
-  <b>Question:</b>
   <%=h @poll.question %>
 </p>
 
-<p>
-  <b>Answers:</b>
-  <%=h @poll.answers %>
-</p>
+<ul>
+  <% @answers.each do |answer| %>
+    <li><%=answer.first%></li>
+  <% end -%>
+</ul>
 
-<p>
-  <b>Ending time:</b>
-  <%=h @poll.ending_time %>
-</p>
-
-<p>
-  <b>Results reply:</b>
-  <%=h @poll.results_reply %>
-</p>
-
-<p>
-  <b>Reply message:</b>
-  <%=h @poll.reply_message %>
-</p>
-
-<p>
-  <b>Owner:</b>
-  <%=h @poll.owner %>
-</p>
-
-
+<%= link_to 'Vote', url_for(:action=>"vote", :id=>@poll.id) %> |
 <%= link_to 'Edit', edit_poll_path(@poll) %> |
-<%= link_to 'Back', polls_path %>
+<%= link_to 'Back', "/" %>

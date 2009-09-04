@@ -1,0 +1,24 @@
+<div id="sidebar">
+  <ul id="sidebar-items">
+    <% if current_user %>
+      <li>
+        <h3>Welcome</h3>
+        <ul class="links">
+          <li><%= link_to "Create New Poll", url_for(:controller=>"polls", :action=>"new") %></li>
+          <li><%= link_to "Show My Polls", url_for(:controller=>"polls", :action=>"index") %></li>
+          <li><%= link_to "My Account", url_for(:controller=>"users", :action=>"edit") %></li>
+          <li><%= link_to "Logout", "/logout" %></li>
+        </ul>
+      </li>
+    <% else %>
+      <li>
+        <ul class="links">
+          <li><%= link_to "Login", "/login" %></li>
+          <li><%= link_to "Register", url_for(:controller=>"users", :action=>"new") %></li>
+        </ul>
+      </li>
+    <% end -%>
+      
+  </ul>
+</div>
+

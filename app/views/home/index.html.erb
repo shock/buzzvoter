@@ -1,0 +1,20 @@
+
+<div id="header">
+  <h1>Welcome to BuzzVoter!</h1>
+  <h2>Poll the Twitter community, whenever, for free!</h2>
+  <br/>
+  <span class="credits">Brought to you by Buzz Manager.</span>
+</div>
+
+<div id="getting-started">
+  <h1>Recent Polls</h1>
+
+  <ul>      
+    <% @recent_polls.each do |poll| %>    
+    <li>
+      <h2><%=poll.name%></h2>
+      <p>Votes: poll.votes</p>
+    </li>
+    <% end -%>
+  </ul>
+</div>

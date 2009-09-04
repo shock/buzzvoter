@@ -9,7 +9,6 @@
     <th>Ending time</th>
     <th>Results reply</th>
     <th>Reply message</th>
-    <th>Owner</th>
   </tr>
 
 <% @polls.each do |poll| %>
@@ -21,7 +20,6 @@
     <td><%=h poll.ending_time %></td>
     <td><%=h poll.results_reply %></td>
     <td><%=h poll.reply_message %></td>
-    <td><%=h poll.owner %></td>
     <td><%= link_to 'Show', poll %></td>
     <td><%= link_to 'Edit', edit_poll_path(poll) %></td>
     <td><%= link_to 'Destroy', poll, :confirm => 'Are you sure?', :method => :delete %></td>

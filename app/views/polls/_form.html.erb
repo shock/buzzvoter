@@ -1,0 +1,65 @@
+<div class="form_element">
+  <%= form.label :name, "Poll Name" %><br />
+  <%= form.text_field :name, :size=>30 %>
+</div>
+<div class="form_element">
+  <%= form.label :url, "URL (can be customized)" %><br />
+  http://buzzvoter.com/<%= form.text_field :url, :size=>20, :style=>"font-size:100%;margin-left:0px;" %>
+</div>
+<div class="form_element">
+  <%= form.label :question, "Poll Question" %><br />
+  <%= form.text_field :question %>
+</div>
+<div class="form_element">
+  <!-- <%= form.label :answers %><br /> -->
+  <div class="table" id="answers">
+    <div class="tr">
+      <div class="th">Answer</div>
+      <div class="th">Abbreviation</div>
+    </div>
+    
+    <% @answers.each do |answer| %>
+      <div class="tr answer">
+        <div class="td"><%= text_field_tag "poll[answer][]", answer.first %></div>
+        <div class="td"><%= text_field_tag "poll[abbr][]", answer.last %></div>
+        <div class="td"><%= link_to "remove", "javascript:void(0);", :onclick=>"removeAnswer(this);" %></div>
+      </div>
+    <% end -%>
+    <div id="answer_anchor"></div>
+  </div>
+  <%= link_to "add another answer...", "javascript:void(0);", :onclick=>"addAnotherAnswer();" %>
+</div>
+<div class="form_element">
+  <%= form.label :ending_time %><br />
+  <%= form.datetime_select :ending_time %>
+</div>
+<div class="form_element">
+  <%= form.check_box :results_reply %>
+  <%= form.label :results_reply, "Reply to Voters with Current Results" %>
+</div>
+<div class="form_element">
+  <%= form.label :reply_message %><br />
+  <%= form.text_field :reply_message %>
+</div>
+<%= form.hidden_field :user_id %>
+<textarea id="new_answer_element" style="display:none">
+  <div class="tr answer">
+    <div class="td"><%= text_field_tag "poll[answer][]", "" %></div>
+    <div class="td"><%= text_field_tag "poll[abbr][]", "" %></div>
+    <div class="td"><%= link_to "remove", "javascript:void(0);", :onclick=>"removeAnswer(this);" %></div>
+  </div>
+</textarea>  
+<script>
+  var new_answer_element = JQ('#new_answer_element').val();
+  
+  function addAnotherAnswer() {
+    JQ('#answer_anchor').before(new_answer_element);
+  }
+
+  function removeAnswer(element) {
+    if( JQ('.answer').size() <= 2 )
+      alert( "You must have at least two answers." );
+    else
+      JQ(element).parent().parent().remove();
+  }
+</script>

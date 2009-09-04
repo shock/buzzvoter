@@ -1,0 +1,24 @@
+<h1>
+  <%=h @poll.name %>
+</h1>
+<p>
+  <b>Ends:</b>
+  <%=h @poll.ending_time %>
+</p>
+<hr/>
+Use this form to cast to your vote through Twitter.  You will be taken to your Twitter page.  Make sure you are logged in and click 'Update' to cast your vote!
+<p>
+  <%=h @poll.question %>
+</p>
+<ul>
+  <% @answers.each do |answer| %>
+    <%= radio_button_tag answer.last, answer.first %><br/>
+  <% end -%>
+</ul>
+<%= link_to( "VOTE", "javascript:void(0);", :onclick=>"submitVote();" ) %>
+<br/>
+
+<script>
+  function submitVote() {
+  }
+</script>

@@ -9,6 +9,8 @@ class CreatePolls < ActiveRecord::Migration
       t.boolean :results_reply
       t.string :reply_message
       t.integer :user_id
+      t.boolean :closed
+      t.integer :vote_count, :default => 0
 
       t.timestamps
     end
