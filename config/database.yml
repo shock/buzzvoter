@@ -45,4 +45,14 @@ production:
   pool: 5
   username: root
   password: 
-  socket: /tmp/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
+
+searchd:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: buzzvoter_production
+  pool: 5
+  username: root
+  password: 
+  socket: /var/lib/mysql/mysql.sock
