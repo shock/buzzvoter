@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090904113537) do
+ActiveRecord::Schema.define(:version => 20090906185710) do
 
   create_table "polls", :force => true do |t|
     t.string   "name"
@@ -20,10 +20,16 @@ ActiveRecord::Schema.define(:version => 20090904113537) do
     t.boolean  "results_reply"
     t.string   "reply_message"
     t.integer  "user_id"
-    t.boolean  "closed"
-    t.integer  "vote_count",    :default => 0
+    t.integer  "vote_count",         :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "poll_tag"
+    t.datetime "last_updated"
+    t.integer  "total_results"
+    t.integer  "new_results"
+    t.datetime "last_started"
+    t.string   "status",             :default => "none"
+    t.integer  "seconds_to_execute"
   end
 
   create_table "users", :force => true do |t|
@@ -42,6 +48,21 @@ ActiveRecord::Schema.define(:version => 20090904113537) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "poll_id"
+    t.string   "answer_abbr"
+    t.integer  "tweet_id",          :limit => 8
+    t.integer  "voter_id",          :limit => 8
+    t.string   "voter_name"
+    t.string   "text"
+    t.integer  "to_user_id",        :limit => 8
+    t.string   "profile_image_url"
+    t.datetime "tweet_created_at"
+    t.boolean  "is_valid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

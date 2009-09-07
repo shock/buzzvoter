@@ -2,20 +2,39 @@
   <%=h @poll.name %>
 </h1>
 <p>
-  <b>Ends:</b>
-  <%=h @poll.ending_time %>
+  <% if @poll.active? %>
+  Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %>
+  <% else %>
+  This poll has closed.
+  <% end -%>
 </p>
 <hr/>
-<p>
-  <%=h @poll.question %>
+<p style="font-size:105%">
+  <b>Q: </b><%=h @poll.question %>
 </p>
 
-<ul>
-  <% @answers.each do |answer| %>
-    <li><%=answer.first%></li>
-  <% end -%>
-</ul>
-
-<%= link_to 'Vote', url_for(:action=>"vote", :id=>@poll.id) %> |
-<%= link_to 'Edit', edit_poll_path(@poll) %> |
-<%= link_to 'Back', "/" %>
+<div class="table" style="width:100%">
+  <div class="tr">
+    <div class="th">Answers</div>
+    <div class="th" style="text-align:center">Votes</div>
+    <div class="th" style="text-align:center">Percentage</div>
+  </div>
+    <% i = 0 %>
+    <% @answers.each do |answer_record| %>
+    <div class="tr">
+      <div class="td"><%= answer_record[:name] %></div>
+      <div class="td" style="text-align:center"><%= answer_record[:num_votes] %></div>
+      <div class="td" style="text-align:center"><%= answer_record[:percentage] %></div>
+    </div>
+    <% i += 1 %>
+    <% end -%>
+</div>
+<br/>
+<a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" target="_blank" style="text-decoration:none">
+  <img src="/images/vote_btn.png" alt="VOTE"/>
+</a>
+<% if current_user && current_user.id == @poll.user_id %>
+<br/><br/>
+  <%= link_to 'Edit', edit_poll_path(@poll) %> |
+  <%= link_to 'Back', url_for(:action=>"index")  %>
+<% end -%>

@@ -53,7 +53,7 @@ a:hover {
 
 
 #header, #about, #getting-started {
-  padding-left: 75px;
+  padding-left: 45px;
   padding-right: 30px;
 }
 
@@ -206,8 +206,8 @@ div.tr { display:table-row; }
 div.table { display:table; margin-top:4px; margin-bottom: 4px;}
 
 td, div.td {
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
   padding-top: 2px;
   padding-bottom: 2px;
   margin: 0px;
@@ -216,15 +216,24 @@ td, div.td {
 }
 
 th, div.th {
-	font-size: 120%;
-  padding-left: 4px;
-  padding-right: 4px;
+	font-size: 105%;
+  padding-left: 2px;
+  padding-right: 2px;
   padding-top:0px;
   padding-bottom:4px;
 /*  background: #A3B0C3 url('/images/bubble-top-16sl.png') repeat-x;*/
 	display: table-cell;
-	text-align: center;
+  text-align: left;
 	font-weight: bold;
+/*  font-style: italic;*/
 }
 
 .form_element {padding-top:15px;padding-bottom:10px;}
+
+img {border:none}
+a {text-decoration:none;}
+a:hover {background:transparent;color:DarkBlue;text-decoration:underline;}
+#recent_polls {width:100%}
+.poll_name {font-size:16px;}
+.poll_status {font-size:12px;text-align:center;padding-left:10px;}
+.poll_owner {font-size:12px;text-align:center;padding-left:10px;}

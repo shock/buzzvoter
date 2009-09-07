@@ -1,27 +1,32 @@
 <div class="form_element">
-  <%= form.label :name, "Poll Name" %><br />
+  <%= form.label :name, "Poll Name" %><br />This name will show up on the landing page for your poll and in status tweets sent to voters.<br />
   <%= form.text_field :name, :size=>30 %>
 </div>
 <div class="form_element">
-  <%= form.label :url, "URL (can be customized)" %><br />
+  <%= form.label :poll_tag, "Poll Tag"%><br/>A unique single word identifier for this poll, for example a hash tag or a Twitter ID.  This tag is used to identify Tweets as votes for your poll.<br />
+  <%= form.text_field :poll_tag, :size=>30 %>
+</div>
+<div class="form_element">
+  <%= form.label :url, "URL" %><br/>You may leave the default or enter a custom URL.<br />
   http://buzzvoter.com/<%= form.text_field :url, :size=>20, :style=>"font-size:100%;margin-left:0px;" %>
 </div>
 <div class="form_element">
   <%= form.label :question, "Poll Question" %><br />
-  <%= form.text_field :question %>
+  <%= form.text_field :question, :size=>50 %>
 </div>
 <div class="form_element">
-  <!-- <%= form.label :answers %><br /> -->
+  <%= form.label :answers, "Answers" %><br />
+  Enter the allowed answers to the question.  Abbreviations must be a single word with alpha-numeric characters only. 
   <div class="table" id="answers">
     <div class="tr">
-      <div class="th">Answer</div>
+      <div class="th">Full Answer</div>
       <div class="th">Abbreviation</div>
     </div>
     
-    <% @answers.each do |answer| %>
+    <% @answers.each do |answer_record| %>
       <div class="tr answer">
-        <div class="td"><%= text_field_tag "poll[answer][]", answer.first %></div>
-        <div class="td"><%= text_field_tag "poll[abbr][]", answer.last %></div>
+        <div class="td"><%= text_field_tag "poll[answer_names][]", answer_record[:name] %></div>
+        <div class="td"><%= text_field_tag "poll[answer_abbrs][]", answer_record[:abbr] %></div>
         <div class="td"><%= link_to "remove", "javascript:void(0);", :onclick=>"removeAnswer(this);" %></div>
       </div>
     <% end -%>
@@ -30,7 +35,7 @@
   <%= link_to "add another answer...", "javascript:void(0);", :onclick=>"addAnotherAnswer();" %>
 </div>
 <div class="form_element">
-  <%= form.label :ending_time %><br />
+  <%= form.label :ending_time %><br />Time and date at which the Poll will automatically end.<br />
   <%= form.datetime_select :ending_time %>
 </div>
 <div class="form_element">
@@ -44,8 +49,8 @@
 <%= form.hidden_field :user_id %>
 <textarea id="new_answer_element" style="display:none">
   <div class="tr answer">
-    <div class="td"><%= text_field_tag "poll[answer][]", "" %></div>
-    <div class="td"><%= text_field_tag "poll[abbr][]", "" %></div>
+    <div class="td"><%= text_field_tag "poll[answer_names][]", "" %></div>
+    <div class="td"><%= text_field_tag "poll[answer_abbrs][]", "" %></div>
     <div class="td"><%= link_to "remove", "javascript:void(0);", :onclick=>"removeAnswer(this);" %></div>
   </div>
 </textarea>  

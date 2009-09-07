@@ -4,6 +4,7 @@
       <li>
         <h3>Welcome</h3>
         <ul class="links">
+          <li><%= link_to "Home", url_for(:controller=>"home", :action=>"index") %></li>
           <li><%= link_to "Create New Poll", url_for(:controller=>"polls", :action=>"new") %></li>
           <li><%= link_to "Show My Polls", url_for(:controller=>"polls", :action=>"index") %></li>
           <li><%= link_to "My Account", url_for(:controller=>"users", :action=>"edit") %></li>
@@ -13,6 +14,7 @@
     <% else %>
       <li>
         <ul class="links">
+          <li><%= link_to "Home", url_for(:controller=>"home", :action=>"index") %></li>
           <li><%= link_to "Login", "/login" %></li>
           <li><%= link_to "Register", url_for(:controller=>"users", :action=>"new") %></li>
         </ul>

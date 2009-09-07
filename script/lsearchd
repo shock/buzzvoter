@@ -1,0 +1,3 @@
+cd $RAILSHOME
+ruby /Users/billdoughty/src/capitalthought/buzzvoter/app/models/searchd.rb &
+tail -f $RAILSHOME/log/searchd_development.log

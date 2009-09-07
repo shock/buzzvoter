@@ -2,19 +2,23 @@
 <div id="header">
   <h1>Welcome to BuzzVoter!</h1>
   <h2>Poll the Twitter community, whenever, for free!</h2>
-  <br/>
-  <span class="credits">Brought to you by Buzz Manager.</span>
 </div>
 
 <div id="getting-started">
   <h1>Recent Polls</h1>
 
-  <ul>      
+  <div class="table" id="recent_polls">      
     <% @recent_polls.each do |poll| %>    
-    <li>
-      <h2><%=poll.name%></h2>
-      <p>Votes: poll.votes</p>
+      <div class="tr">
+        <div class="td poll_name"><%= link_to poll.name, poll.fq_url %></div>
+        <div class="td poll_owner">by @<%= poll.user.twitter_id %></div>
+        <div class="td poll_status"><%= poll_status poll %></div>
+      </div>
     </li>
     <% end -%>
-  </ul>
+  </div>
+  <br/>
+  <p>
+    <%= link_to "Create Your Own Poll", url_for(:controller=>"polls", :action=>"new") %>
+  </p>
 </div>

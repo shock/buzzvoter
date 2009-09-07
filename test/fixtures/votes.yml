@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  poll_id: 1
+  answer_abbr: MyString
+  tweet_id: 1
+  twitter_id: 1
+
+two:
+  poll_id: 1
+  answer_abbr: MyString
+  tweet_id: 1
+  twitter_id: 1

@@ -2,23 +2,49 @@
   <%=h @poll.name %>
 </h1>
 <p>
-  <b>Ends:</b>
-  <%=h @poll.ending_time %>
+  <% if @poll.active? %>
+  Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %>
+  <% else %>
+  This poll has closed.
+  <% end -%>
 </p>
 <hr/>
-Use this form to cast to your vote through Twitter.  You will be taken to your Twitter page.  Make sure you are logged in and click 'Update' to cast your vote!
-<p>
-  <%=h @poll.question %>
-</p>
-<ul>
-  <% @answers.each do |answer| %>
-    <%= radio_button_tag answer.last, answer.first %><br/>
-  <% end -%>
-</ul>
-<%= link_to( "VOTE", "javascript:void(0);", :onclick=>"submitVote();" ) %>
-<br/>
+<% if @poll.active? %>
+  Login to Twitter then select your vote below and click <b>VOTE</b>. You will be taken to your Twitter page.  Click <b>Update</b> there to cast your vote.
+  <p>
+    <b>Q: </b><%=h @poll.question %>
+  </p>
+  <ul>
+    <% @answers.each do |answer_record| %>
+      <%= radio_button_tag "answer", answer_record[:abbr] %><%= answer_record[:name] %><br/>
+    <% end -%>
+  </ul>
+  <a href="javascript:void(0);" onclick="return submitVote(this);" target="_blank" style="text-decoration:none">
+    <img src="/images/vote_btn.png" alt="VOTE"/>
+  </a>
+  <br/>
 
-<script>
-  function submitVote() {
-  }
-</script>
+  <script>
+
+    function createTweet(answer) {
+      tweet = "#vote #"+answer+" <%=@poll.poll_tag%>";
+      return tweet;
+    }
+  
+    function submitVote(el) {
+      var selected_answer = JQ("input:radio[@name='answer']:checked");
+      if( selected_answer.length < 1 )
+      {
+        alert( "You must select an answer." );
+        return false;
+      }
+      else
+      {
+        var answer = selected_answer.val();
+        var location = "http://twitter.com/?status="+escape(createTweet(answer));
+        JQ(el).attr("href",location);
+        return true;
+      }
+    }
+  </script>
+<% end -%>

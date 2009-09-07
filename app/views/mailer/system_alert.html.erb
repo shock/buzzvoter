@@ -1,0 +1,18 @@
+<div>
+<pre>
+<%= @system_alert.data %>
+</pre>
+  <br/>
+  ==============================
+  <br/>
+  <% if @system_alert.exception %>
+    Exception : <br/>
+<pre>
+<%= "#{@system_alert.exception.class} - #{@system_alert.exception.message}" %>
+<%= @system_alert.exception.backtrace.join("\n") %>
+</pre>
+    <br/>
+    ==============================
+    <br/>
+  <% end -%>
+</div>

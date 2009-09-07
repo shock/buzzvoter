@@ -1,5 +1,8 @@
 <h1>Login</h1>
- 
+<p>
+You must be a registered user to create polls.  Registration is simple and immediate.  <%= link_to "Register here.", url_for(:controller=>"users", :action=>"new") %>
+</p>
+
 <% form_for @user_session, :url => user_session_path do |f| %>
   <%= f.error_messages %>
   <%= f.label :email %><br />

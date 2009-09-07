@@ -1,0 +1,67 @@
+#!/bin/bash
+#!/bin/sh
+
+# This script should be placed in /etc/init.d and used to start the search daemon at run level 3
+
+# Source function library.
+. /etc/init.d/functions
+
+export RAILSHOME=/home/buzzvoter/searchd
+SERVICE=$RAILSHOME/script/searchd
+pidfile=/var/run/bmsearchd.pid
+RETVAL=0
+
+start() {
+  echo -n "Starting BuzzVoter Search Daemon:"
+  # See if it's already running. Look *only* at the pid file.
+  __pids_var_run "$base" "$pid_file"
+             
+  if [ -n "$pid" -a -z "$force" ]; then
+    RETVAL=1
+    echo_failure
+  fi
+  $SERVICE
+  RETVAL=$?
+  if [ $RETVAL -eq 0 ]; then
+    echo_success
+  else
+    echo_failure
+  fi
+  return $RETVAL
+}
+
+stop() {
+  echo -n "Stopping BuzzVoter Search Daemon:"
+  killproc -p $pidfile ruby
+  RETVAL=$?
+  echo
+  return $RETVAL
+}
+
+restart(){
+    stop
+    start
+}
+
+
+RETVAL=0
+
+case $1 in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    status -p $pidfile ruby
+    ;;
+  *)
+    echo "Usage: buzzvoter_searchd {start|stop|status|restart}"
+    RETVAL=1
+esac
+
+exit

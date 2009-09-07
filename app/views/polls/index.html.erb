@@ -1,25 +1,25 @@
-<h1>Listing polls</h1>
-
+<h1>Your Polls</h1>
+<hr>
 <table>
   <tr>
     <th>Name</th>
     <th>Url</th>
-    <th>Question</th>
-    <th>Answers</th>
-    <th>Ending time</th>
-    <th>Results reply</th>
-    <th>Reply message</th>
+    <th>Winner</th>
+    <th>Status</th>
   </tr>
 
 <% @polls.each do |poll| %>
   <tr>
     <td><%=h poll.name %></td>
     <td><%=h poll.url %></td>
-    <td><%=h poll.question %></td>
-    <td><%=h poll.answers %></td>
-    <td><%=h poll.ending_time %></td>
-    <td><%=h poll.results_reply %></td>
-    <td><%=h poll.reply_message %></td>
+    <td><%=h poll.get_answers_with_votes.first[:abbr] %></td>
+    <td>
+      <% if poll.active? %>
+      Closes in <%=h distance_of_time_in_words_to_now poll.ending_time %>
+      <% else %>
+      Closed.
+      <% end -%>
+    </td>
     <td><%= link_to 'Show', poll %></td>
     <td><%= link_to 'Edit', edit_poll_path(poll) %></td>
     <td><%= link_to 'Destroy', poll, :confirm => 'Are you sure?', :method => :delete %></td>

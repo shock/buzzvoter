@@ -1,0 +1,80 @@
+# This is the master config for the application.
+# It is loaded from within environment.rb using config/application_config.rb
+# 
+# These configuration parameters are ultimately accessed by the application through a hash named $APP_CONFIG
+--- 
+global:   # these global values are used for all environments, they can be overriden by individual environment settings
+          #
+  :search:
+    :polling_interval_s:          10    # polling interval for new jobs
+    :search_delay_interval_s:     10    # minimum seconds between searches
+    :minimum_search_interval_s:   15    # number of seconds that must pass before the same search can be executed again
+    :use_threading: true
+    :ts_debug_level: 0
+
+  :admin: 
+    :email_recipients: 
+    - Bill Doughty <billdoughty@capitalthought.com>
+    :email_sender: 
+    - BuzzManager.net <noreply@buzzmanager.net>
+
+  :system_alerts:         # configuration for system alerts manager
+      
+beta: 
+  :search:
+    
+  :site: 
+    :protocol: http
+    :host_name: betabuzz
+    :domain: capitalthought.com
+    :site_url: http://betabuzz.capitalthought.com
+    
+development: 
+  :search: 
+    :polling_interval_s:          5    # polling interval for new jobs
+    :ts_debug_level: 4
+    :use_threading: false
+    :minimum_search_interval_s:   15    # number of seconds that must pass before the same search can be executed again
+
+  :site: 
+    :protocol: http
+    :host_name: localhost
+    :domain: local.org
+    :port: "3000"
+    :site_url: http://localhost.local.org:3000
+    
+  :admin: 
+    :email_sender: 
+    - BM Development <noreply@buzzmanager.net>
+
+searchd: 
+
+  :site: 
+    :protocol: http
+    :host_name: buzz
+    :domain: capitalthought.com
+    :site_url: http://buzz.capitalthought.com
+    
+  :admin: 
+    :email_sender: 
+    - BM Search D <noreply@buzzmanager.net>
+
+production: 
+
+  :site: 
+    :protocol: http
+    :host_name: buzz
+    :domain: capitalthought.com
+    :site_url: http://buzz.capitalthought.com
+
+test: 
+  :search: 
+    :use_threading: false
+    :ts_debug_level: 0
+    :polling_interval_s:         0   # polling interval for new jobs
+    :search_delay_interval_s:    0   # minimum seconds between searches
+    :minimum_search_interval_s:  0    # number of seconds that must pass before the same search can be executed again
+  
+  :site: 
+    :protocol: http
+    :site_url: http://

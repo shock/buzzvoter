@@ -1,0 +1,23 @@
+#!/bin/bash
+#!/bin/sh
+
+if [ -z $RAILSHOME ]; then
+  echo "You must set RAILSHOME environment variable to point to the BuzzVoter Rails root directory."
+  exit 1
+fi
+
+RUBY=/opt/ree/bin/ruby
+SERVICE="$RUBY $RAILSHOME/app/models/searchd.rb"
+
+if ps ax | grep -v grep | grep "$SERVICE" > /dev/null
+then
+  exit 1
+else
+#  echo "$SERVICE is not running"
+#  echo "Starting BuzzVoter Search Server"
+  export RAILS_ENV=searchd
+  cd $RAILSHOME
+  $SERVICE >> $RAILSHOME/log/stdout.log 2>&1 &
+  echo $! > /var/run/bmsearchd.pid
+  exit
+fi
