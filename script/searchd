@@ -15,7 +15,7 @@ then
 else
 #  echo "$SERVICE is not running"
 #  echo "Starting BuzzVoter Search Server"
-  export RAILS_ENV=searchd
+  export RAILS_ENV=production
   cd $RAILSHOME
   $SERVICE >> $RAILSHOME/log/stdout.log 2>&1 &
   echo $! > /var/run/bmsearchd.pid
