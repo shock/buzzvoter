@@ -41,7 +41,11 @@ class ApplicationConfig
   end
   
   def site_url
-    url = "#{@global_config[:site][:protocol]}://#{@global_config[:site][:host_name]}.#{@global_config[:site][:domain]}"
+    url = "#{@global_config[:site][:protocol]}://"
+    if @global_config[:site][:host_name]
+      url += "#{@global_config[:site][:host_name]}."
+    end
+    url += "#{@global_config[:site][:domain]}"
     if @global_config[:site][:port]
       url += ":#{@global_config[:site][:port]}"
     end

@@ -16,7 +16,7 @@ global:   # these global values are used for all environments, they can be overr
     :email_recipients: 
     - Bill Doughty <billdoughty@capitalthought.com>
     :email_sender: 
-    - BuzzManager.net <noreply@buzzmanager.net>
+    - BuzzVoter.com <noreply@buzzvoter.com>
 
   :system_alerts:         # configuration for system alerts manager
       
@@ -27,7 +27,6 @@ beta:
     :protocol: http
     :host_name: betabuzz
     :domain: capitalthought.com
-    :site_url: http://betabuzz.capitalthought.com
     
 development: 
   :search: 
@@ -41,31 +40,16 @@ development:
     :host_name: localhost
     :domain: local.org
     :port: "3000"
-    :site_url: http://localhost.local.org:3000
     
   :admin: 
     :email_sender: 
-    - BM Development <noreply@buzzmanager.net>
-
-searchd: 
-
-  :site: 
-    :protocol: http
-    :host_name: buzz
-    :domain: capitalthought.com
-    :site_url: http://buzz.capitalthought.com
-    
-  :admin: 
-    :email_sender: 
-    - BM Search D <noreply@buzzmanager.net>
+    - BV Development <noreply@buzzvoter.com>
 
 production: 
 
   :site: 
     :protocol: http
-    :host_name: buzz
-    :domain: capitalthought.com
-    :site_url: http://buzz.capitalthought.com
+    :domain: buzzvoter.com
 
 test: 
   :search: 
