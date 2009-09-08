@@ -30,7 +30,7 @@
     <% end -%>
 </div>
 <br/>
-<a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" target="_blank" style="text-decoration:none">
+<a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" style="text-decoration:none">
   <img src="/images/vote_btn.png" alt="VOTE"/>
 </a>
 <% if current_user && current_user.id == @poll.user_id %>

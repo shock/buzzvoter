@@ -364,5 +364,8 @@ class Poll < ActiveRecord::Base
     end
     output
   end
-
+  
+  def generated_vote_tweet
+    tweet = vote_tweet.gsub('#POLLNAME#', name ).gsub('#POLLTAG#', poll_tag ).gsub('#URL#', fq_url )
+  end
 end

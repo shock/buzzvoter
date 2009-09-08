@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20090908190109) do
     t.boolean  "results_reply"
     t.string   "reply_message"
     t.integer  "user_id"
-    t.integer  "vote_count",           :default => 0
+    t.integer  "vote_count",         :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "poll_tag"
@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(:version => 20090908190109) do
     t.integer  "total_results"
     t.integer  "new_results"
     t.datetime "last_started"
-    t.string   "status",               :default => "none"
+    t.string   "status",             :default => "none"
     t.integer  "seconds_to_execute"
-    t.string   "suggested_vote_tweet"
+    t.string   "vote_tweet"
   end
 
   create_table "users", :force => true do |t|

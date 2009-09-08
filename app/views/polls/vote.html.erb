@@ -27,7 +27,8 @@
   <script>
 
     function createTweet(answer) {
-      tweet = "#vote #"+answer+" <%=@poll.poll_tag%>";
+      tweet = "<%= @poll.generated_vote_tweet %>";
+      tweet = tweet.replace( "#ANSWER#", "#"+answer );
       return tweet;
     }
   

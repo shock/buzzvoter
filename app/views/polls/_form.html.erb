@@ -1,13 +1,13 @@
 <div class="form_element">
-  <%= form.label :name, "Poll Name" %><br />This name will show up on the landing page for your poll and in status tweets sent to voters.<br />
+  <%= form.label :name, "Poll Name" %><br /><p>This name will show up on the landing page for your poll and in status tweets sent to voters.</p>
   <%= form.text_field :name, :size=>30 %>
 </div>
 <div class="form_element">
-  <%= form.label :poll_tag, "Poll Tag"%><br/>A unique single word identifier for this poll, for example a hash tag or a Twitter ID.  This tag is used to identify Tweets as votes for your poll.<br />
+  <%= form.label :poll_tag, "Poll Tag"%><br/><p>A unique single word identifier for this poll, for example a hash tag or a Twitter ID.  This tag is used to identify Tweets as votes for your poll.</p>
   <%= form.text_field :poll_tag, :size=>30 %>
 </div>
 <div class="form_element">
-  <%= form.label :url, "URL" %><br/>You may leave the default or enter a custom URL.<br />
+  <%= form.label :url, "URL" %><br/><p>You may leave the default or enter a custom URL.</p>
   http://buzzvoter.com/<%= form.text_field :url, :size=>20, :style=>"font-size:100%;margin-left:0px;" %>
 </div>
 <div class="form_element">
@@ -16,7 +16,7 @@
 </div>
 <div class="form_element">
   <%= form.label :answers, "Answers" %><br />
-  Enter the allowed answers to the question.  Abbreviations must be a single word with alpha-numeric characters only. 
+  <p>Enter the allowed answers to the question.  Abbreviations must be a single word with alpha-numeric characters only.</p>
   <div class="table" id="answers">
     <div class="tr">
       <div class="th">Full Answer</div>
@@ -35,7 +35,7 @@
   <%= link_to "add another answer...", "javascript:void(0);", :onclick=>"addAnotherAnswer();" %>
 </div>
 <div class="form_element">
-  <%= form.label :ending_time %><br />Time and date at which the Poll will automatically end.<br />
+  <%= form.label :ending_time %><br /><p>Time and date at which the Poll will automatically end.</p>
   <%= form.datetime_select :ending_time %>
 </div>
 <div class="form_element">
@@ -44,9 +44,17 @@
 </div>
 <div class="form_element">
   <%= form.label :reply_message %><br />
-  The following message will be sent to each voter when a valid vote is received.<br/>
-  #ANSWER# will be replaced with the voter's poll answer.  #POLLNAME# will be replaced with the name of the poll.<br/>
+  <p>The following message will be sent to each voter when a valid vote is received.</p>
+  <p>
+  <strong>#ANSWER#</strong> will be replaced with the voter's poll answer.  <strong>#POLLNAME#</strong> will be replaced with the name of the poll.</p>
   <%= form.text_area :reply_message, :rows=>2, :cols=>50, :maxlength=>80 %>
+</div>
+<div class="form_element">
+  <%= form.label :vote_tweet %><br />
+  <p>This will be the default tweet generated when a user votes.</p>
+  <p><strong>#ANSWER#</strong> will be replaced with the voter's poll answer.  <strong>#POLLNAME#</strong> will be replaced with the name of the poll. <strong>#POLLTAG#</strong> will be replaced with the poll's tag.  <strong>#URL#</strong> will be replaced with a link to this poll's landing page.</p>
+  <p><strong>#ANSWER#</strong> and <strong>#POLLTAG#</strong> are mandatory.  <strong>#POLLNAME#</strong> and <strong>#URL#</strong> are optional.  Note that the hashtag <strong>#vote</strong> must be present somewhere in this text.</p>
+  <%= form.text_area :vote_tweet, :rows=>2, :cols=>50, :maxlength=>80 %>
 </div>
 <%= form.hidden_field :user_id %>
 <textarea id="new_answer_element" style="display:none">
