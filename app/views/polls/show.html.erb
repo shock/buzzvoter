@@ -36,5 +36,6 @@
 <% if current_user && current_user.id == @poll.user_id %>
 <br/><br/>
   <%= link_to 'Edit', edit_poll_path(@poll) %> |
+  <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to 'Back', url_for(:action=>"index")  %>
 <% end -%>

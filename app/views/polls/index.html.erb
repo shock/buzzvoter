@@ -4,7 +4,7 @@
   <tr>
     <th>Name</th>
     <th>Url</th>
-    <th>Winner</th>
+    <th>Winner(s)</th>
     <th>Status</th>
   </tr>
 
@@ -12,7 +12,7 @@
   <tr>
     <td><%=h poll.name %></td>
     <td><%=h poll.url %></td>
-    <td><%=h poll.get_answers_with_votes.first[:abbr] %></td>
+    <td><%= poll.winners_as_text %></td>
     <td>
       <% if poll.active? %>
       Closes in <%=h distance_of_time_in_words_to_now poll.ending_time %>
@@ -22,7 +22,7 @@
     </td>
     <td><%= link_to 'Show', poll %></td>
     <td><%= link_to 'Edit', edit_poll_path(poll) %></td>
-    <td><%= link_to 'Destroy', poll, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete', poll, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

@@ -52,7 +52,11 @@ class Tweeter
   end
   
   def status_update( text, in_reply_to_status_id=nil )
-    update( text, in_reply_to_status_id )
+    if $APP_CONFIG[:twitter][:stub_tweets]
+      logger.info("TWEET: #{text}")
+    else
+      update( text, in_reply_to_status_id )
+    end
   end
   
   def initialize( login, password )

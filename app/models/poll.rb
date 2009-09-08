@@ -57,8 +57,12 @@ class Poll < ActiveRecord::Base
   # Sends a tweet to the voter with the current poll results
   def send_poll_results vote
     tweeter = Tweeter.default
-    
-    status = "@#{vote.voter_name} The current winner in the #{name} Poll is #{answers_hash[vote.answer_abbr][:name]}. #{fq_url} #{poll_tag}"
+    _winners = winners
+    if _winners.length > 1
+      status = "@#{vote.voter_name} The current winners in the #{name} poll are #{winners_as_text}. #{fq_url} #{poll_tag}"
+    else
+      status = "@#{vote.voter_name} The current winner in the #{name} poll is #{winners_as_text}. #{fq_url} #{poll_tag}"
+    end
     tweeter.status_update( status, vote.tweet_id )
     logger.info("POLL RESULTS SENT")
   end
@@ -66,7 +70,6 @@ class Poll < ActiveRecord::Base
   # Sends a tweet to the voter with an error message
   def send_error_reply tweet, message
     tweeter = Tweeter.default
-    
     status = "@#{tweet.from_user} Sorry. Your vote was rejected. #{message}"
     tweeter.status_update( status, tweet.tweet_id )
     logger.info("ERROR MESSAGE SENT")
@@ -323,11 +326,43 @@ class Poll < ActiveRecord::Base
   end
   
   def total_votes
-    @total_votes ||= Vote.count(:conditions=>{:poll_id=>id, :is_valid=>true})
+    @total_votes = Vote.count(:conditions=>{:poll_id=>id, :is_valid=>true})
   end
   
   def fq_url
     "#{$APP_CONFIG.site_url}/#{url}"
   end
   
+  # returns an array of answer_records, one for each first place winner
+  # returns an empty array if there are no votes yet
+  def winners
+    answer_records = get_answers_with_votes
+    _winners = []
+    first = answer_records.shift
+    if first[:num_votes] > 0
+      _winners << first
+      answer_records.each do |answer_record|
+        _winners << answer_record if answer_record[:num_votes] == first[:num_votes]
+      end
+    end
+    _winners
+  end
+  
+  def winners_as_text separator=", ", conjunction=" and "
+    _winners = winners
+    if _winners.length == 0
+      output = "No votes yet."
+    else
+      output = "#{_winners.shift[:name]}"
+      _winners.each do |winner|
+        if winner != _winners.last
+          output +="#{separator}#{winner[:name]}"
+        else
+          output +="#{conjunction}#{winner[:name]}"
+        end
+      end
+    end
+    output
+  end
+
 end
