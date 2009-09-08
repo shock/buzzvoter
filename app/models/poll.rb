@@ -8,6 +8,7 @@ class Poll < ActiveRecord::Base
   }
   
   named_scope :active, :conditions =>"ending_time > \"#{Time.now.utc.to_s(:db)}\""
+  named_scope :unprocessed, :conditions =>"ending_time < \"#{Time.now.utc.to_s(:db)}\" AND processed=FALSE"
   
   validates_presence_of :answers, :url, :poll_tag
   validates_uniqueness_of :url, :poll_tag
@@ -368,4 +369,22 @@ class Poll < ActiveRecord::Base
   def generated_vote_tweet
     tweet = vote_tweet.gsub('#POLLNAME#', name ).gsub('#POLLTAG#', poll_tag ).gsub('#URL#', fq_url )
   end
+  
+  # processes a completed poll and sends all voters the final results
+  def process
+    return if processed?
+    tweeter = Tweeter.default
+    _winners = winners
+    all_votes = votes.find_all_by_is_valid( true )
+    all_votes.each do |vote|
+      if _winners.length > 1
+        status = "@#{vote.voter_name} Thanks for voting!  The final winners in the #{name} poll are #{winners_as_text}. #{fq_url} #{poll_tag}"
+      else
+        status = "@#{vote.voter_name} Thanks for voting!  The final winner in the #{name} poll is #{winners_as_text}. #{fq_url} #{poll_tag}"
+      end
+      tweeter.status_update( status, vote.tweet_id )
+    end
+    update_attributes!(:processed=>true)
+  end
+  
 end

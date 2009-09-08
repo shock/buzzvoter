@@ -75,8 +75,13 @@ if !defined? SEARCHD
               no_searches_this_pass = update_log_header no_searches_this_pass
               auto_search.execute( @search_logger )
               last_search = auto_search
-              break # stop now, because we only want to process one automated search each time through the main loop
             end
+          end
+          
+          # Now check for unprocessed, finished Polls and process them
+          unprocessed_polls = Poll.unprocessed.all
+          while @should_execute && next_poll = unprocessed_polls.shift
+            next_poll.process
           end
           end_time = DateTime.now
           delta_time = end_time - start_time

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090908190109) do
+ActiveRecord::Schema.define(:version => 20090908205823) do
 
   create_table "polls", :force => true do |t|
     t.string   "name"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20090908190109) do
     t.string   "status",             :default => "none"
     t.integer  "seconds_to_execute"
     t.string   "vote_tweet"
+    t.boolean  "processed",          :default => false
   end
 
   create_table "users", :force => true do |t|
