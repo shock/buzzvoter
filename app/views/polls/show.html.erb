@@ -3,12 +3,14 @@
 </h1>
 <p>
   <% if @poll.active? %>
-  Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %>
+  <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
+  <h3>Current Winner: <%= @poll.winners_as_text %></h3>
   <% else %>
-  This poll has closed.
+  <div class="poll_ending">This poll has closed.</div>
+  <h2>Final Winner: <%= @poll.winners_as_text %></h2>
   <% end -%>
 </p>
-<hr/>
+<br/>
 <p style="font-size:105%">
   <b>Q: </b><%=h @poll.question %>
 </p>
@@ -30,9 +32,13 @@
     <% end -%>
 </div>
 <br/>
-<a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" style="text-decoration:none">
-  <img src="/images/vote_btn.png" alt="VOTE"/>
-</a>
+<% if @poll.active? %>
+<p>
+  <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" class="button">
+    VOTE
+  </a>
+</p>
+<% end -%>
 <% if current_user && current_user.id == @poll.user_id %>
 <br/><br/>
   <%= link_to 'Edit', edit_poll_path(@poll) %> |

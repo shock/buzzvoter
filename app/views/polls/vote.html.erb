@@ -3,15 +3,18 @@
 </h1>
 <p>
   <% if @poll.active? %>
-  Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %>
+  <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
   <% else %>
-  This poll has closed.
+  <div class="poll_ending">This poll has closed.</div>
+  <h2>Final Winner: <%= @poll.winners_as_text %></h2>
   <% end -%>
 </p>
-<hr/>
+<br/>
+
 <% if @poll.active? %>
+<h3>VOTE</h3>
   Login to Twitter then select your vote below and click <b>VOTE</b>. You will be taken to your Twitter page.  Click <b>Update</b> there to cast your vote.
-  <p>
+  <p style="font-size:105%">
     <b>Q: </b><%=h @poll.question %>
   </p>
   <ul>
@@ -19,8 +22,9 @@
       <%= radio_button_tag "answer", answer_record[:abbr] %><%= answer_record[:name] %><br/>
     <% end -%>
   </ul>
-  <a href="javascript:void(0);" onclick="return submitVote(this);" target="_blank" style="text-decoration:none">
-    <img src="/images/vote_btn.png" alt="VOTE"/>
+  <br/>
+  <a href="javascript:void(0);" onclick="return submitVote(this);" target="_blank" class="button">
+    VOTE
   </a>
   <br/>
 

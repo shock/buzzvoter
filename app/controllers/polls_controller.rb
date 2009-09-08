@@ -34,7 +34,7 @@ class PollsController < ApplicationController
     @answers = @poll.get_answers_with_votes
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :layout=>"vote" }
       format.xml  { render :xml => @poll }
     end
   end
@@ -46,7 +46,7 @@ class PollsController < ApplicationController
     @answers = @poll.answers_hash.values
 
     respond_to do |format|
-      format.html # vote.html.erb
+      format.html { render :layout=>"vote" }
       format.xml  { render :xml => @poll }
     end
   end

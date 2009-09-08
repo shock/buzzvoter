@@ -49,7 +49,12 @@ a:hover {
 
 #footer {
   clear: both;
+  text-align:right;
+  font-style: italic;
+  font-size: 11px;
 }
+
+#footer a {color:#AAF;}
 
 
 #header, #about, #getting-started {
@@ -229,6 +234,7 @@ th, div.th {
 /*  font-style: italic;*/
 }
 
+.poll_ending { font-size:11px; font-style: italic; }
 .form_element {padding-top:15px;padding-bottom:10px;}
 
 img {border:none}
@@ -238,3 +244,19 @@ a:hover {background:transparent;color:DarkBlue;text-decoration:underline;}
 .poll_name {font-size:16px;}
 .poll_status {font-size:12px;text-align:center;padding-left:10px;}
 .poll_owner {font-size:12px;text-align:center;padding-left:10px;}
+
+a.button {
+  background: #AFB4AB url('/images/bubble-top-16ssl.png') repeat-x;
+/*  background: #DFDFDF;*/
+  border-top: solid #E5E5E5 2px;
+  border-right: solid #999999 2px;
+  border-left: solid #D5D5D5 2px;
+  border-bottom: solid #838383 2px;
+  color: #000;
+  padding: 2px;
+  text-decoration:none;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+a.button:hover{ color:#000; text-decoration: none; }

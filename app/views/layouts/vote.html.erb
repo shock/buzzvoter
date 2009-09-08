@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Buzz Voter</title>
+  <!-- <%= stylesheet_link_tag 'scaffold' %> -->
+  <%= stylesheet_link_tag 'buzzvoter' %>
+  <%= stylesheet_link_tag 'capitalthought' %>
+  <%= javascript_include_tag "jquery-1.2.6" %>
+  
+</head>
+<body>
+
+  <div id="page">
+    <!-- <%=render :partial=>"home/sidebar"%> -->
+    <div id="content">
+      <% if flash[:notice] %>
+      <div id="flash_notice"><%= flash[:notice] %></div>
+      <% end -%>
+      <%= yield %>
+    </div>
+    <div id="footer"><a href="/">buzzvoter.com<a></div>
+  </div>
+
+</body>
+</html>
+
+<script>
+  function hideFlashes()
+  {
+    setTimeout(function(){
+      JQ('#flash_notice').fadeOut(1000);
+      JQ('#flash_error').fadeOut(1000);
+    }, 4000);
+  }
+  
+  JQ(document).ready(function(){
+    hideFlashes();
+  });
+</script>
