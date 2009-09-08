@@ -110,7 +110,7 @@ class PollsController < ApplicationController
         format.html { redirect_to(@poll) }
         format.xml  { head :ok }
       else
-        @answers = @poll.answers.values
+        @answers = @poll.answers_hash.values
         format.html { render :action => "edit" }
         format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
       end

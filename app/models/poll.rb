@@ -33,8 +33,8 @@ class Poll < ActiveRecord::Base
       abbr = abbrs.shift
       if answer_name.blank? || abbr.blank?
         raise AnswerValidationError.new( "Answer and Abbreviation fields cannot be blank." );
-      elsif !(abbr =~ /^\w*$/)
-        raise AnswerValidationError.new( "Abbreviation fields must contain alpha-numeric characters only with no spaces." );
+      elsif !(abbr =~ /^[\w\#\@]*$/)
+        raise AnswerValidationError.new( "Abbreviation fields can only contain alpha-numeric characters, '#' and '@' with no spaces." );
       elsif answer_name =~ /\|/ || abbr =~ /\|/
         raise AnswerValidationError.new( "Answers cannot contain the '|' character." );
       elsif answers_hash.keys.include?( abbr )
@@ -49,7 +49,7 @@ class Poll < ActiveRecord::Base
   # Sends a response tweet to the voter when a valid vote is recieved
   def send_vote_reply vote
     tweeter = Tweeter.default
-    reply_text = reply_message.gsub('#ANSWER#', "##{vote.answer_abbr}").gsub('#POLLNAME#', name )
+    reply_text = reply_message.gsub('#ANSWER#', "#{vote.answer_abbr}").gsub('#POLLNAME#', name )
     status = "@#{vote.voter_name} #{reply_text} #{fq_url} #{poll_tag}"
     tweeter.status_update( status, vote.tweet_id )
     logger.info("REPLY SENT")
@@ -87,7 +87,7 @@ class Poll < ActiveRecord::Base
       abbreviations.each do |abbr|
         # puts "tweet.text #{tweet.text}"
         # puts "abbr #{abbr}"
-        if tweet.text =~ /##{abbr}/
+        if tweet.text =~ /#{abbr}/
           raise InvalidVoteError.new("It contains more than one valid answer.") if answer_abbr
           answer_abbr = abbr
         end
@@ -283,6 +283,7 @@ class Poll < ActiveRecord::Base
     begin
       params[:answers] = Poll.get_answers_from_form_fields( answer_names, answer_abbrs )
     rescue AnswerValidationError
+      errors.add( :answer, $!.to_s )
       return false
     end
     update_attributes(params)

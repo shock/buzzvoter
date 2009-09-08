@@ -32,7 +32,7 @@
 
     function createTweet(answer) {
       tweet = "<%= @poll.generated_vote_tweet %>";
-      tweet = tweet.replace( "#ANSWER#", "#"+answer );
+      tweet = tweet.replace( "#ANSWER#", answer );
       return tweet;
     }
   
