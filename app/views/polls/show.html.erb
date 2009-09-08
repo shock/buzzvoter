@@ -41,7 +41,10 @@
 <% end -%>
 <% if current_user && current_user.id == @poll.user_id %>
 <br/><br/>
+  <h3>Manage Your Poll</h3>
   <%= link_to 'Edit', edit_poll_path(@poll) %> |
-  <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to 'Back', url_for(:action=>"index")  %>
+  <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
+  Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
+  <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
+  <%= link_to 'Back', url_for(:action=>"index")  %><br/>
 <% end -%>
