@@ -19,6 +19,10 @@ global:   # these global values are used for all environments, they can be overr
     - BuzzVoter.com <noreply@buzzvoter.com>
 
   :system_alerts:         # configuration for system alerts manager
+  
+  :twitter:
+    :login: buzzvoter
+    :password: otherinbox2008
       
 beta: 
   :search:
@@ -33,7 +37,7 @@ development:
     :polling_interval_s:          5    # polling interval for new jobs
     :ts_debug_level: 4
     :use_threading: false
-    :minimum_search_interval_s:   15    # number of seconds that must pass before the same search can be executed again
+    :minimum_search_interval_s:   10    # number of seconds that must pass before the same search can be executed again
 
   :site: 
     :protocol: http

@@ -201,6 +201,7 @@ height: 64px;
 label { font-weight: bold; font-size: 120%; line-height: 110%; }
 input { background: #F8F8F8 url('/images/vu-fade4l.png') repeat-x; }
 textarea, input, select {margin-top:4px; font-size:120%;}
+textarea {padding:2px;}
 
 div.tr { display:table-row; }
 div.table { display:table; margin-top:4px; margin-bottom: 4px;}

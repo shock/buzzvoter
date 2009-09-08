@@ -45,29 +45,60 @@ class Poll < ActiveRecord::Base
     answer_column = answers_hash.to_yaml
   end
   
+  # Sends a response tweet to the voter when a valid vote is recieved
+  def send_vote_reply vote
+    tweeter = Tweeter.default
+    reply_text = reply_message.gsub('#ANSWER#', "##{vote.answer_abbr}").gsub('#POLLNAME#', name )
+    status = "@#{vote.voter_name} #{reply_text} #{fq_url} #{poll_tag}"
+    tweeter.status_update( status, vote.tweet_id )
+    logger.info("REPLY SENT")
+  end
+  
+  # Sends a tweet to the voter with the current poll results
+  def send_poll_results vote
+    tweeter = Tweeter.default
+    
+    status = "@#{vote.voter_name} The current winner in the #{name} Poll is #{answers_hash[vote.answer_abbr][:name]}. #{fq_url} #{poll_tag}"
+    tweeter.status_update( status, vote.tweet_id )
+    logger.info("POLL RESULTS SENT")
+  end
+  
+  # Sends a tweet to the voter with an error message
+  def send_error_reply tweet, message
+    tweeter = Tweeter.default
+    
+    status = "@#{tweet.from_user} Sorry. Your vote was rejected. #{message}"
+    tweeter.status_update( status, tweet.tweet_id )
+    logger.info("ERROR MESSAGE SENT")
+  end
+  
   # creates a Vote record from the tweet.  returns an InvalidVote exception if the vote is invalid
   def create_vote_from_tweet tweet
     begin
       valid = false
+      # see if the user already has made a valid vote
+      valid_vote = Vote.find_by_voter_id_and_poll_id_and_is_valid(tweet.from_user_id, id, true)
+      raise InvalidVoteError.new("One vote allowed per poll.") if valid_vote
       answer_abbr = nil
       abbreviations.each do |abbr|
         # puts "tweet.text #{tweet.text}"
         # puts "abbr #{abbr}"
         if tweet.text =~ /##{abbr}/
-          raise InvalidVoteError.new("Vote contains more than one valid answer.") if answer_abbr
+          raise InvalidVoteError.new("It contains more than one valid answer.") if answer_abbr
           answer_abbr = abbr
         end
       end
       if answer_abbr
         valid = true
       else
-        raise InvalidVoteError.new("Vote does not contain a valid answer.")
+        raise InvalidVoteError.new("It does not contain a valid answer.")
       end
     rescue Exception
       raise $!
     ensure
-      vote = Vote.new( :poll_id=>id, :answer_abbr=>answer_abbr, :tweet_id=>tweet.tweet_id, :voter_id=>tweet.from_user_id, :voter_name=>tweet.from_user, :text=>tweet.text, :profile_image_url=>tweet.profile_image_url, :to_user_id=>tweet.to_user_id, :tweet_created_at=>tweet.created_at, :valid=>valid )
+      vote = Vote.create!( :poll_id=>id, :answer_abbr=>answer_abbr, :tweet_id=>tweet.tweet_id, :voter_id=>tweet.from_user_id, :voter_name=>tweet.from_user, :text=>tweet.text, :profile_image_url=>tweet.profile_image_url, :to_user_id=>tweet.to_user_id, :tweet_created_at=>tweet.created_at, :is_valid=>valid )
     end
+    vote
   end
   
   # processes an individual search result, and creates a vote if applicable
@@ -77,13 +108,13 @@ class Poll < ActiveRecord::Base
     begin
       # return right away if we have already processed this tweet
       return if Vote.find_by_tweet_id( tweet.tweet_id )
-      # see if the user already has made a valid vote
-      valid_vote = Vote.find_by_voter_id_and_poll_id_and_valid(tweet.from_user_id, id, true)
-      raise InvalidVoteError.new("One vote allowed per poll.") if valid_vote
-      create_vote_from_tweet(tweet)
+      vote = create_vote_from_tweet(tweet)
+      send_vote_reply( vote )
+      send_poll_results( vote ) if results_reply
       @new_results += 1
 
     rescue InvalidVoteError
+      send_error_reply( tweet, $!.to_s )
       # The users vote is invalid.  TODO: send a tweet back to them indicating the error.
       logger.info "** Invalid Vote: #{$!.inspect}"
       logger.info "** Vote Contents: #{tweet.inspect}"
@@ -280,7 +311,7 @@ class Poll < ActiveRecord::Base
     @answer_records = answers_hash.values
     @total_votes = total_votes
     @answer_records.each do |answer_record|
-      answer_record[:votes] = Vote.find_all_by_answer_abbr_and_poll_id( answer_record[:abbr], id )
+      answer_record[:votes] = Vote.find_all_by_answer_abbr_and_poll_id_and_is_valid( answer_record[:abbr], id, true )
       answer_record[:num_votes] = answer_record[:votes].length
       if @total_votes > 0
         answer_record[:percentage] = '%0.f%' % (answer_record[:num_votes].to_f / @total_votes.to_f * 100.0)
@@ -292,7 +323,7 @@ class Poll < ActiveRecord::Base
   end
   
   def total_votes
-    @total_votes ||= Vote.count(:conditions=>{:poll_id=>id})
+    @total_votes ||= Vote.count(:conditions=>{:poll_id=>id, :is_valid=>true})
   end
   
   def fq_url

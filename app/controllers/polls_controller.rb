@@ -11,6 +11,7 @@ class PollsController < ApplicationController
   SAMPLE_NAME = "Best MLB Pitcher"
   SAMPLE_QUESTION = "Who is the best pitcher in Major League Baseball today?"
   SAMPLE_POLL_TAG = "#MLBP"
+  SAMPLE_REPLY_MESSAGE = "Your vote for #ANSWER# in the #POLLNAME# poll was registered."
   
   
   # GET /polls
@@ -58,6 +59,8 @@ class PollsController < ApplicationController
     @poll.question = SAMPLE_QUESTION
     @poll.poll_tag = SAMPLE_POLL_TAG
     @poll.url = Poll.create_unique_url
+    @poll.results_reply = true
+    @poll.reply_message = SAMPLE_REPLY_MESSAGE
     @answers = SAMPLE_ANSWERS
     respond_to do |format|
       format.html # new.html.erb
