@@ -5,10 +5,21 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+
+# Make Passenger log STDOUT and STDERR to file
+if ENV["TMPDIR"] && ENV["TMPDIR"].index("passenger")
+std_out = File.new(RAILS_ROOT + "/log/stdout.log","a")
+std_err = File.new(RAILS_ROOT + "/log/stderr.log","a")
+$stdout.reopen(std_out)
+$stderr.reopen(std_err)
+end
+
 if ENV["RAILS_ENV"] ||= "development"
   puts "RAILS_ENV: "+ENV["RAILS_ENV"]
 end
+
 puts "ENVIRONMENT INVOKED with #{$0}"
+
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
