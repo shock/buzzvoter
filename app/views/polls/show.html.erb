@@ -35,6 +35,7 @@
       <div class="td"><%= answer_record[:name] %></div>
       <div class="td" style="text-align:center"><%= answer_record[:num_votes] %></div>
       <div class="td" style="text-align:center"><%= answer_record[:percentage] %></div>
+      <div class="td" style="text-align:center"><a href="http://search.twitter.com/search?q=<%= CGI.escape("#vote #{@poll.poll_tag} #{answer_record[:abbr]}") %>" target="_blank">votes</a></div>
     </div>
     <% i += 1 %>
     <% end -%>
