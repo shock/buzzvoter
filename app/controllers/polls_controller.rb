@@ -43,6 +43,10 @@ class PollsController < ApplicationController
   # GET /polls/1.xml
   def vote
     @poll = Poll.find_by_id_or_url(params[:id])
+    if !@poll.active?
+      redirect_to( :action=>"show", :id=>@poll.id )
+      return
+    end
     @answers = @poll.answers_hash.values
 
     respond_to do |format|

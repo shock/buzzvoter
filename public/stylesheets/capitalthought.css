@@ -1,9 +1,6 @@
 body, h1 { color:#FFF }
-a { color: #AAF; }
+a { color: #999CF9; }
 body { background: #000 url('//www.capitalfactory.com/images/curtain_logoed.jpg') repeat-x; background-position: top center; }
-#page, #content { background-color: transparent; }
+#page, #content { background-color: transparent;  width: 550px;}
 #content { border: none; }
-#page {
-  width: 500px;
-}
 

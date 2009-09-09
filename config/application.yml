@@ -24,6 +24,10 @@ global:   # these global values are used for all environments, they can be overr
     :login: buzzvoter
     :password: otherinbox2008
     :stub_tweets: false     # if true, tweets will be logged instead of being sent
+    
+  :css:
+    # :stylesheet: buzzvoter_dark
+    :stylesheet: buzzvoter
       
 beta: 
   :search:
@@ -51,7 +55,7 @@ development:
     - BV Development <noreply@buzzvoter.com>
 
   :twitter:
-    :stub_tweets: true     # if true, tweets will be logged instead of being sent
+    :stub_tweets: false     # if true, tweets will be logged instead of being sent
     
 production: 
 

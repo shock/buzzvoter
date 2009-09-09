@@ -4,20 +4,28 @@
 <p>
   <% if @poll.active? %>
   <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
-  <h3>Current Winner: <%= @poll.winners_as_text %></h3>
+  <% if @poll.winners.length > 1 %>
+    <h2>Current Winners: <%= @poll.winners_as_text %></h2>
+  <% else %>
+    <h2>Current Winner: <%= @poll.winners_as_text %></h2>
+  <% end -%>
   <% else %>
   <div class="poll_ending">This poll has closed.</div>
-  <h2>Final Winner: <%= @poll.winners_as_text %></h2>
+  <% if @poll.winners.length > 1 %>
+    <h2>Final Winners: <%= @poll.winners_as_text %></h2>
+  <% else %>
+    <h2>Final Winner: <%= @poll.winners_as_text %></h2>
+  <% end -%>
   <% end -%>
 </p>
-<br/>
+<hr/>
 <p style="font-size:105%">
-  <b>Q: </b><%=h @poll.question %>
+  <h3>Q: <%=h @poll.question %></h3>
 </p>
 
 <div class="table" style="width:100%">
   <div class="tr">
-    <div class="th">Answers</div>
+    <div class="th">Answer</div>
     <div class="th" style="text-align:center">Votes</div>
     <div class="th" style="text-align:center">Percentage</div>
   </div>
@@ -34,17 +42,19 @@
 <br/>
 <% if @poll.active? %>
 <p>
-  <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);" class="button">
-    VOTE
+  <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);">
+    CAST YOUR VOTE
   </a>
 </p>
 <% end -%>
 <% if current_user && current_user.id == @poll.user_id %>
-<br/><br/>
+<br/><hr/>
+<p>
   <h3>Manage Your Poll</h3>
   <%= link_to 'Edit', edit_poll_path(@poll) %> |
   <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
   Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
   <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
   <%= link_to 'Back', url_for(:action=>"index")  %><br/>
+</p>
 <% end -%>
