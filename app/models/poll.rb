@@ -17,6 +17,12 @@ class Poll < ActiveRecord::Base
   
   private
   
+  def validate
+    if abbreviations.length < 2
+      errors.add(:answers, " - You must have at least two answers.")
+    end
+  end
+  
   def logger
     # puts "@logger #{@logger.inspect}"
     @logger || RAILS_DEFAULT_LOGGER
@@ -87,7 +93,7 @@ class Poll < ActiveRecord::Base
       abbreviations.each do |abbr|
         # puts "tweet.text #{tweet.text}"
         # puts "abbr #{abbr}"
-        if tweet.text.downcase =~ /#{abbr.downcase}/
+        if tweet.text.downcase =~ /(^|[\#\@ ])#{abbr.downcase} /
           raise InvalidVoteError.new("It contains more than one valid answer.") if answer_abbr
           answer_abbr = abbr
         end
@@ -268,6 +274,7 @@ class Poll < ActiveRecord::Base
     answer_names = params.delete(:answer_names)
     answer_abbrs = params.delete(:answer_abbrs)
     poll = Poll.new( params )
+    poll.set_form_answers( answer_names.dup, answer_abbrs.dup )
     begin
       poll.answers = get_answers_from_form_fields( answer_names, answer_abbrs )
     rescue AnswerValidationError
@@ -278,10 +285,12 @@ class Poll < ActiveRecord::Base
 
   # updates a poll from the supplied form fields
   def update_from_form_fields params
-    answer_names = params.delete(:answer_names)
-    answer_abbrs = params.delete(:answer_abbrs)
+    @answer_names = params.delete(:answer_names)
+    @answer_abbrs = params.delete(:answer_abbrs)
+    puts "@answer_abbrs: #{@answer_abbrs.inspect}"
     begin
-      params[:answers] = Poll.get_answers_from_form_fields( answer_names, answer_abbrs )
+      params[:answers] = Poll.get_answers_from_form_fields( @answer_names.dup, @answer_abbrs.dup )
+      puts "@answer_abbrs: #{@answer_abbrs.inspect}"
     rescue AnswerValidationError
       errors.add( :answer, $!.to_s )
       return false
@@ -289,8 +298,27 @@ class Poll < ActiveRecord::Base
     update_attributes(params)
   end
   
+  def set_form_answers answer_names, answer_abbrs
+    @answer_names = answer_names
+    @answer_abbrs = answer_abbrs
+  end
+  
+  # used to repopulate form with answer-abbr values that did not pass validation
+  def invalid_answers
+    _answers = []
+    @answer_abbrs.each do |abbr|
+      puts "ABBR: #{abbr}"
+      _answers << {:name=>@answer_names.shift, :abbr=>abbr}
+    end
+    _answers.sort  { |a,b| a[:abbr] <=> b[:abbr] }
+  end
+  
   def answers_hash
     answer_hash = YAML.load(self[:answers])
+  end
+    
+  def sorted_answer_records
+    answers_hash.values.sort { |a,b| a[:abbr] <=> b[:abbr] }
   end
     
   # returns a one dimensional array of all the answers' abbreviations
@@ -313,7 +341,7 @@ class Poll < ActiveRecord::Base
   end
   
   def get_answers_with_votes
-    @answer_records = answers_hash.values
+    @answer_records = sorted_answer_records
     @total_votes = total_votes
     @answer_records.each do |answer_record|
       answer_record[:votes] = Vote.find_all_by_answer_abbr_and_poll_id_and_is_valid( answer_record[:abbr], id, true )

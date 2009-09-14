@@ -55,7 +55,7 @@ development:
     - BV Development <noreply@buzzvoter.com>
 
   :twitter:
-    :stub_tweets: false     # if true, tweets will be logged instead of being sent
+    :stub_tweets: true     # if true, tweets will be logged instead of being sent
     
 production: 
 

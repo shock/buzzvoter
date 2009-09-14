@@ -47,7 +47,7 @@ class PollsController < ApplicationController
       redirect_to( :action=>"show", :id=>@poll.id )
       return
     end
-    @answers = @poll.answers_hash.values
+    @answers = @poll.sorted_answer_records
 
     respond_to do |format|
       format.html { render :layout=>"vote" }
@@ -77,7 +77,7 @@ class PollsController < ApplicationController
   # GET /polls/1/edit
   def edit
     @poll = Poll.find_by_id_or_url(params[:id])
-    @answers = @poll.answers_hash.values
+    @answers = @poll.sorted_answer_records
   end
 
   # POST /polls
@@ -92,11 +92,7 @@ class PollsController < ApplicationController
         format.html { redirect_to(@poll) }
         format.xml  { render :xml => @poll, :status => :created, :location => @poll }
       else
-        if @poll.answers 
-          @answers = @poll.answers_hash.values
-        else
-          @answers = SAMPLE_ANSWERS
-        end
+        @answers = @poll.invalid_answers
         format.html { render :action => "new" }
         format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
       end
@@ -114,7 +110,7 @@ class PollsController < ApplicationController
         format.html { redirect_to(@poll) }
         format.xml  { head :ok }
       else
-        @answers = @poll.answers_hash.values
+        @answers = @poll.invalid_answers
         format.html { render :action => "edit" }
         format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
       end

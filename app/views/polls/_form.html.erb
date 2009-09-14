@@ -36,7 +36,7 @@
 </div>
 <div class="form_element">
   <%= form.label :ending_time %><br /><p>Time and date at which the Poll will automatically end.</p>
-  <%= form.datetime_select :ending_time %>
+  <%= form.datetime_select :ending_time %><p><span class="time_zone"><%= current_user.time_zone %></span></p>
 </div>
 <div class="form_element">
   <%= form.check_box :results_reply %>
