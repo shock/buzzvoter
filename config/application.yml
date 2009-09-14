@@ -48,7 +48,7 @@ development:
     :protocol: http
     :host_name: localhost
     :domain: local.org
-    :port: "3000"
+    :port: "3002"
     
   :admin: 
     :email_sender: 
