@@ -55,7 +55,11 @@
   <%= link_to 'Edit', edit_poll_path(@poll) %> |
   <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
   Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
-  <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
+  <% if @poll.active? %>
+    <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
+  <% else %>
+    <a href="<%=h "http://twitter.com/?status="+CGI.escape("Check out the results of the #{@poll.name} poll at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About The Results</a><br/><br/>
+  <% end -%>
   <%= link_to 'Back', url_for(:action=>"index")  %><br/>
 </p>
 <% end -%>
