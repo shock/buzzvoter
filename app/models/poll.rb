@@ -211,8 +211,8 @@ class Poll < ActiveRecord::Base
         end
 
       rescue Exception => exception
-        logger.error $!.inspect
-        logger.error $!.backtrace.join("\n")
+        # logger.error $!.inspect
+        # logger.error $!.backtrace.join("\n")
         raise $!
       end
     end

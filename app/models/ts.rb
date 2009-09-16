@@ -5,6 +5,8 @@ require 'grackle'
 
 class TS
   include SimpleDebug
+  
+  NUM_RETRIES = 10
 
   # Exceptions
   class TSException < RuntimeError; end
@@ -36,7 +38,7 @@ class TS
   def getTweetsForPage page
     debug_msg("Search page #{page}", 2)
     successful = false
-    retries = 10
+    retries = NUM_RETRIES
     while !successful && retries > 0
       begin
         query = @grackle[:search].search? :q=>@search_terms, :rpp=>100, :page=>@page
@@ -47,6 +49,7 @@ class TS
         if retries == 0
           raise $!
         end
+        sleep (NUM_RETRIES - retries)
       end
     end
     results = query.results

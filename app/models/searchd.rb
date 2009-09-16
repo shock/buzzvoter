@@ -66,6 +66,9 @@ if !defined? SEARCHD
         
           # logger.info "Checking for active Polls..."
           auto_searches = Poll.active.all(:conditions=>"status != 'executing'", :order=>:last_updated)
+          auto_searches.each do |auto_search|
+            logger.info "ACTIVE SEARCH: #{auto_search.name}:#{auto_search.id} - ENDING: #{auto_search.ending_time}"
+          end
           # puts "auto_searches: #{auto_searches.inspect}"
           skipped_search = nil
           # Then loop through them until we find one that is ready for processing

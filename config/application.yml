@@ -6,9 +6,9 @@
 global:   # these global values are used for all environments, they can be overriden by individual environment settings
           #
   :search:
-    :polling_interval_s:          5    # polling interval for new jobs
-    :search_delay_interval_s:     5    # minimum seconds between searches
-    :minimum_search_interval_s:   5    # number of seconds that must pass before the same search can be executed again
+    :polling_interval_s:          15    # polling interval for new jobs
+    :search_delay_interval_s:     15    # minimum seconds between searches
+    :minimum_search_interval_s:   15    # number of seconds that must pass before the same search can be executed again
     :use_threading: true
     :ts_debug_level: 0
 
