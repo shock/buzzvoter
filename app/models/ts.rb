@@ -50,7 +50,9 @@ class TS
           puts "TWITTER ERROR RESPONSE:\n#{$!.response_body}"
           raise $!
         end
-        sleep (NUM_RETRIES - retries)
+        secs_to_sleep = (NUM_RETRIES - retries)*(NUM_RETRIES - retries)
+        error_msg( "Sleeping #{secs_to_sleep} seconds..." )
+        sleep secs_to_sleep
       end
     end
     results = query.results
