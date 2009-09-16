@@ -2,7 +2,7 @@ body {
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
-  background-color: #CFCFCF;
+  background-color: #F8F8F8;
   font-family: "Lucida Grande", "Bitstream Vera Sans", "Verdana";
   font-size: 13px;
   color: #333;
@@ -34,7 +34,7 @@ a:hover {
 #content {
   float: left;
   background-color: white;
-  border: 3px solid #aaa;
+  border: 2px solid #ddd;
   border-top: none;
   padding: 25px;
   padding-top:15px;
