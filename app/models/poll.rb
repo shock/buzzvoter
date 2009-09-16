@@ -356,7 +356,7 @@ class Poll < ActiveRecord::Base
   end
   
   def total_votes
-    @total_votes = Vote.count(:conditions=>{:poll_id=>id, :is_valid=>true})
+    @total_votes = Vote.count(:conditions=>{:poll_id=>id, :is_valid=>true, :answer_abbr=>abbreviations})
   end
   
   def fq_url
