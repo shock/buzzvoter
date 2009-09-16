@@ -47,6 +47,7 @@ class TS
         error_msg( $!.to_s + "\nRetrying.  #{retries} tries left." )
         retries -= 1
         if retries == 0
+          puts "TWITTER ERROR RESPONSE:\n#{$!.response_body}"
           raise $!
         end
         sleep (NUM_RETRIES - retries)
