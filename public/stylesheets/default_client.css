@@ -1,12 +1,12 @@
 body, h1 { color:#222; }
 a { color: #797DC0; }
 body { 
-  background: #FFF url('/images/logo.png') no-repeat scroll; 
-/*  background: #FFF;*/
+/*  background: #FFF url('/images/logo.png') no-repeat scroll; */
+  background: #FFF;
   background-position: 50% 10px;
   margin: 0px;
   }
 #page, #content { background-color: transparent;  width: 550px; }
 #content { border: none; padding-left: 0px;}
-#page { margin-top:100px; }
+/*#page { margin-top:100px; }*/
 #footer a { color:#9698DE; }
