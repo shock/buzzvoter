@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090908205823) do
+ActiveRecord::Schema.define(:version => 20091012035209) do
 
   create_table "polls", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20090908205823) do
     t.boolean  "results_reply"
     t.string   "reply_message"
     t.integer  "user_id"
-    t.integer  "vote_count",         :default => 0
+    t.integer  "vote_count",            :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "poll_tag"
@@ -28,10 +28,25 @@ ActiveRecord::Schema.define(:version => 20090908205823) do
     t.integer  "total_results"
     t.integer  "new_results"
     t.datetime "last_started"
-    t.string   "status",             :default => "none"
+    t.string   "status",                :default => "none"
     t.integer  "seconds_to_execute"
     t.string   "vote_tweet"
-    t.boolean  "processed",          :default => false
+    t.boolean  "processed",             :default => false
+    t.string   "bg_color",              :default => "FFFFFF"
+    t.string   "text_color",            :default => "222222"
+    t.string   "link_color",            :default => "0000CC"
+    t.boolean  "tile_bg_image",         :default => false
+    t.integer  "logo_height",           :default => 0
+    t.string   "bg_image_file_name"
+    t.string   "bg_image_content_type"
+    t.integer  "bg_image_file_size"
+    t.datetime "bg_image_updated_at"
+    t.boolean  "use_bg_image"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
+    t.boolean  "use_logo"
   end
 
   create_table "users", :force => true do |t|

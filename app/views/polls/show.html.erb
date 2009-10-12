@@ -52,7 +52,8 @@
 <br/><hr/>
 <p>
   <h3>Manage Your Poll</h3>
-  <%= link_to 'Edit', edit_poll_path(@poll) %> |
+  <%= link_to 'Change Poll', edit_poll_path(@poll) %> |
+  <%= link_to 'Customize Appearance', url_for({:controller=>:polls, :action=>:edit_layout, :id=>@poll.id}) %> |
   <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
   Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
   <% if @poll.active? %>

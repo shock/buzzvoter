@@ -1,0 +1,108 @@
+<script>
+  jQuery.fn.init_color_picker = function(hexcolor, callback) {
+    var widget = JQ(this);
+    var picker = widget.find('.cp_picker');
+    var selector = widget.find('.cp_selector');
+    var pos = selector.offset();
+    widget.find('.cp_selector div').css('backgroundColor', '#' + hexcolor);
+    picker.ColorPicker({
+      flat: true,
+      color: '#'+hexcolor,
+      onSubmit: function(hsb, hex, rgb) {
+        widget.find('.cp_selector div').css('backgroundColor', '#' + hex);
+        picker.stop().animate({height: 0}, 500);
+        callback(hex);
+      }
+    });
+    widget.find('.cp_picker>div').css('position', 'absolute');
+    widget.find('.cp_picker').css({
+      left: pos.left,
+      top: pos.top,
+    });
+    selector.bind('click', function() {
+      picker.stop().toggle();
+      picker.stop().animate({height: 173}, 500);
+    });
+  }
+  
+  jQuery.fn.set_color = function( hexcolor )
+  {
+    var widget = JQ(this);
+    var picker = widget.find('.cp_picker');
+    widget.find('.cp_selector div').css('backgroundColor', '#' + hexcolor);
+    picker.ColorPickerSetColor(hexcolor);
+  }
+  
+  function reset_layout()
+  {
+    JQ('#bg_color').val('<%=@poll.bg_color%>');
+    JQ('#bg_cp').set_color(JQ('#bg_color').val());
+    JQ('#text_color').val('<%=@poll.text_color%>');
+    JQ('#text_cp').set_color(JQ('#text_color').val());
+    JQ('#link_color').val('<%=@poll.link_color%>');
+    JQ('#link_cp').set_color(JQ('#link_color').val());
+    set_colors_from_fields();
+  }
+  
+  function set_colors_from_fields()
+  {
+    JQ('body').css('backgroundColor', '#'+JQ('#bg_color').val());
+    JQ('body').css('color', '#'+JQ('#text_color').val());
+    JQ('a').css('color', '#'+JQ('#link_color').val());
+  }
+  
+  jQuery(document).ready( function() {
+    JQ('#bg_cp').init_color_picker('<%= @poll.bg_color%>', function(hexcolor) { 
+      JQ('#bg_color').val(hexcolor);
+      set_colors_from_fields();
+    });
+    JQ('#text_cp').init_color_picker('<%= @poll.text_color%>', function(hexcolor) { 
+      JQ('#text_color').val(hexcolor);
+      set_colors_from_fields();
+    });
+    JQ('#link_cp').init_color_picker('<%= @poll.link_color%>', function(hexcolor) { 
+      JQ('#link_color').val(hexcolor);
+      set_colors_from_fields();
+    });
+    reset_layout();
+  });
+</script>
+
+<h3>Colors</h3>
+<div style="height:225px">
+<div id="bg_cp" class="color_option">
+  Background Color
+  <%= layout.hidden_field :bg_color, :id=>:bg_color %>
+  <div class="cp_selector"><div></div></div>
+  <div class="cp_picker"></div>
+</div>
+<div id="text_cp" class="color_option">
+  Text Color
+  <%= layout.hidden_field :text_color, :id=>:text_color %>
+  <div class="cp_selector"><div></div></div>
+  <div class="cp_picker"></div>
+</div>
+<div id="link_cp" class="color_option">
+  Link Color
+  <%= layout.hidden_field :link_color, :id=>:link_color %>
+  <div class="cp_selector"><div></div></div>
+  <div class="cp_picker"></div>
+</div>
+</div>
+<h3>Background Image</h3>
+<div id="bg_image">
+  <%= image_tag @poll.bg_image.url(:thumb) if @poll.bg_image.exists? %>
+  <div>
+    <p><%= layout.check_box :use_bg_image %>&nbsp;Use Backround Image</p>
+    <p>Upload New Background<%= layout.file_field :bg_image %></p>
+    <p><%= layout.check_box :tile_bg_image %>&nbsp;Tile Background</p>
+  </div>
+</div>
+<h3>Logo</h3>
+<div id="bg_image">
+  <%= image_tag @poll.logo.url(:thumb) if @poll.logo.exists? %>
+  <div>
+    <p><%= layout.check_box :use_logo %>&nbsp;Use Logo</p>
+    <p>Upload New Logo<%= layout.file_field :logo %></p>
+  </div>
+</div>

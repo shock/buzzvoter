@@ -22,8 +22,9 @@
       Closed.
       <% end -%>
     </td>
-    <td><%= link_to 'Show', poll %></td>
-    <td><%= link_to 'Edit', edit_poll_path(poll) %></td>
+    <td><%= link_to 'Show Poll', poll %></td>
+    <td><%= link_to 'Edit Poll', edit_poll_path(poll) %></td>
+    <td><%= link_to 'Customize Appearance',  url_for({:controller=>:polls, :action=>:edit_layout, :id=>poll.id})  %></td>
     <td><%= link_to 'Delete', poll, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

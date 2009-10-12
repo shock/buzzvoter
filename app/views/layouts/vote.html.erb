@@ -9,12 +9,30 @@
   <%= stylesheet_link_tag $APP_CONFIG[:css][:stylesheet] %>
   <%= stylesheet_link_tag 'default_client' %>
   <%= javascript_include_tag "jquery-1.2.6" %>
-  
+  <style>
+    body { 
+      <% if @poll.use_bg_image && @poll.bg_image.exists? %>
+        background-image: url('<%=@poll.bg_image.url%>'); 
+        background-position: top center;
+        <% unless @poll.tile_bg_image && @poll.bg_image %>
+        background-repeat: no-repeat;
+        <% end %>
+      <% end -%>
+      background-color: #<%=@poll.bg_color%>;
+      color: #<%=@poll.text_color%>;
+    }
+
+    a { color: #<%=@poll.link_color%>; }
+  </style>
+
 </head>
 <body>
-
+  <% if @poll && @poll.use_logo && @poll.logo.exists? %>
+    <div style="text-align:center;margin-top:10px;">
+      <img src="<%=@poll.logo.url%>">
+    </div>
+  <% end %>
   <div id="page">
-    <!-- <%=render :partial=>"home/sidebar"%> -->
     <div id="content">
       <% if flash[:notice] %>
       <div id="flash_notice"><%= flash[:notice] %></div>

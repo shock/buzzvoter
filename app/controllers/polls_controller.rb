@@ -18,7 +18,7 @@ class PollsController < ApplicationController
   # GET /polls
   # GET /polls.xml
   def index
-    @polls = Poll.all
+    @polls = Poll.find_all_by_user_id(current_user.id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -80,6 +80,11 @@ class PollsController < ApplicationController
     @answers = @poll.sorted_answer_records
   end
 
+  def edit_layout
+    @poll = Poll.find_by_id_or_url(params[:id])
+    render :layout=>"design"
+  end
+
   # POST /polls
   # POST /polls.xml
   def create
@@ -105,14 +110,33 @@ class PollsController < ApplicationController
     @poll = Poll.find_by_id_or_url(params[:id])
 
     respond_to do |format|
-      if @poll.update_from_form_fields(params[:poll])
-        flash[:notice] = 'Poll was successfully updated.'
-        format.html { redirect_to(@poll) }
-        format.xml  { head :ok }
+      if params[:poll].keys.include?(:answer_names)
+        if @poll.update_from_form_fields(params[:poll])
+          flash[:notice] = 'Poll was successfully updated.'
+          format.html { redirect_to(@poll) }
+          format.xml  { head :ok }
+        else
+          @answers = @poll.invalid_answers
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
+        end
       else
-        @answers = @poll.invalid_answers
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
+        if @poll.update_attributes( params[:poll] )
+          if @poll.use_logo && @poll.logo.exists?
+            if @poll.update_attributes({:logo_height=>@poll.logo.height})
+              flash[:notice] = 'Poll layout saved.'
+              format.html { redirect_to(:controller=>:polls, :action=>:edit_layout, :id=>@poll.id) }
+            else
+              flash[:error] = 'Unexpected error calculating logo dimensions.'
+              format.html { render :action => "edit_layout" }
+            end
+          else
+            flash[:notice] = 'Poll layout saved.'
+            format.html { redirect_to(:controller=>:polls, :action=>:edit_layout, :id=>@poll.id) }
+          end
+        else
+          format.html { render :action => "edit_layout" }
+        end
       end
     end
   end

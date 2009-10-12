@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Buzz Voter</title>
+  <!-- <%= stylesheet_link_tag 'scaffold' %> -->
+  <%= stylesheet_link_tag $APP_CONFIG[:css][:stylesheet] %>
+  <%= stylesheet_link_tag "colorpicker" %>
+  <%= stylesheet_link_tag "layout" %>
+  <%= javascript_include_tag "jquery-1.2.6" %>
+  <%= javascript_include_tag "colorpicker/js/colorpicker" %> 
+  <%= javascript_include_tag :defaults %>
+  <style>
+    body { 
+      <% if @poll.use_bg_image && @poll.bg_image.exists? %>
+        background-image: url('<%=@poll.bg_image.url%>'); 
+        background-position: top center;
+        <% unless @poll.tile_bg_image && @poll.bg_image %>
+        background-repeat: no-repeat;
+        <% end %>
+      <% end -%>
+      background-color: #<%=@poll.bg_color%>;
+      color: #<%=@poll.text_color%>;
+    }
+
+    a { color: #<%=@poll.link_color%>; }
+  </style>
+
+</head>
+<body>
+  <% if @poll && @poll.use_logo && @poll.logo.exists? %>
+    <div style="text-align:center;margin-top:10px;">
+      <img src="<%=@poll.logo.url%>">
+    </div>
+  <% end %>
+
+  <div id="page">
+    <%=render :partial=>"home/sidebar"%>
+    <div id="content">
+      <% if flash[:notice] %>
+      <div id="flash_notice"><%= flash[:notice] %></div>
+      <% end -%>
+      <%= yield %>
+    </div>
+    <div id="footer">&nbsp;</div>
+  </div>
+</body>
+</html>
+
+<script>
+  function hideFlashes()
+  {
+    setTimeout(function(){
+      JQ('#flash_notice').fadeOut(1000);
+      JQ('#flash_error').fadeOut(1000);
+    }, 4000);
+  }
+  
+  JQ(document).ready(function(){
+    hideFlashes();
+  });
+</script>

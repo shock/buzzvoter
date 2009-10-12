@@ -1,6 +1,8 @@
 class Poll < ActiveRecord::Base
   belongs_to :user
   has_many :votes, :dependent=>:destroy
+  has_attached_file :bg_image, :styles => {:thumb=> "100x100>"}
+  has_attached_file :logo, :styles => {:thumb=> "100x100>"}
 
   named_scope :recent, lambda { |limit| 
     limit ||= 5

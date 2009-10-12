@@ -10,3 +10,7 @@ doc/app
 *.bundle
 public/javascripts/cache
 public/stylesheets/cache
+public/bg_images/**/*
+public/bg_images/*
+public/logos/**/*
+public/logos/*

@@ -1,0 +1,28 @@
+<h1>"<%=h @poll.name %>" Appearance</h1>
+<hr/>
+<p>
+You can customize the appearance of your poll by changing the color scheme and adding a background and logo image below.
+</p>
+<p>
+Changes to colors will appear immediately but will not be saved until you click the "Save Changes" button.  Background and Logo images will not show up until you click "Save Changes".  
+</p>
+<p>
+To reset the colors back to their original settings, click the "Reset" link.  
+</p>
+<p>
+Clicking "Back" will return you to the poll without saving any current changes.
+</p>
+</p>
+<hr/>
+<br/>
+<% form_for(@poll, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => "layout", :object => f %>
+  <p>
+    <%= f.submit 'Save Changes' %> | 
+    <%= link_to 'Reset', "javascript:void(0);", :onclick=>'reset_layout();' %> | 
+    <%= link_to 'Back', @poll %>
+  </p>
+<% end %>
+
+

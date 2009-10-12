@@ -10,7 +10,7 @@ body {
 
 h1 {
   font-size: 28px;
-  color: #000;
+/*  color: #000;*/
   margin: 0px;
 }
 
@@ -33,9 +33,9 @@ a:hover {
 
 #content {
   float: left;
-  background-color: white;
-  border: 2px solid #ddd;
-  border-top: none;
+/*  background-color: white;*/
+/*  border: 2px solid #ddd;*/
+/*  border-top: none;*/
   padding: 25px;
   padding-top:15px;
   width: 500px;
@@ -261,3 +261,4 @@ a.button {
 
 a.button:hover{ color:#000; text-decoration: none; }
 .time_zone { margin-left: 8px; font-style: italic; font-size: 0.8em; }
+
