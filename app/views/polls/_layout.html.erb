@@ -37,10 +37,29 @@
   {
     JQ('#bg_color').val('<%=@poll.bg_color%>');
     JQ('#bg_cp').set_color(JQ('#bg_color').val());
-    JQ('#text_color').val('<%=@poll.text_color%>');
+    JQ('#text_color').val('%=@poll.text_color%>');
     JQ('#text_cp').set_color(JQ('#text_color').val());
-    JQ('#link_color').val('<%=@poll.link_color%>');
+    JQ('#link_color').val('%=@poll.link_color%>');
     JQ('#link_cp').set_color(JQ('#link_color').val());
+    JQ("#poll_use_bg_image").attr('checked',<%=@poll.use_bg_image%>);
+    JQ("#poll_use_logo").attr('checked',<%=@poll.use_logo%>);
+    JQ("#poll_tile_bg_image").attr('checked',<%=@poll.tile_bg_image%>);
+    JQ('body').css('backgroundImage',"url('<%=@poll.bg_image.url%>')");
+    JQ('#logo').html('<img src="<%=@poll.logo.url%>">');
+    set_colors_from_fields();
+  }
+  
+  function default_layout()
+  {
+    JQ('#bg_color').val('FFFFFF');
+    JQ('#bg_cp').set_color(JQ('#bg_color').val());
+    JQ('#text_color').val('222222');
+    JQ('#text_cp').set_color(JQ('#text_color').val());
+    JQ('#link_color').val('0000CC');
+    JQ('#link_cp').set_color(JQ('#link_color').val());
+    JQ("INPUT[type='checkbox']").attr('checked',false);
+    JQ('body').css('backgroundImage','none');
+    JQ('#logo').html('');
     set_colors_from_fields();
   }
   
@@ -54,17 +73,17 @@
   jQuery(document).ready( function() {
     JQ('#bg_cp').init_color_picker('<%= @poll.bg_color%>', function(hexcolor) { 
       JQ('#bg_color').val(hexcolor);
-      set_colors_from_fields();
+      // set_colors_from_fields();
     });
     JQ('#text_cp').init_color_picker('<%= @poll.text_color%>', function(hexcolor) { 
       JQ('#text_color').val(hexcolor);
-      set_colors_from_fields();
+      // set_colors_from_fields();
     });
     JQ('#link_cp').init_color_picker('<%= @poll.link_color%>', function(hexcolor) { 
       JQ('#link_color').val(hexcolor);
-      set_colors_from_fields();
+      // set_colors_from_fields();
     });
-    reset_layout();
+    // reset_layout();
   });
 </script>
 

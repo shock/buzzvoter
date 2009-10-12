@@ -31,7 +31,7 @@
 </head>
 <body>
   <% if @poll && @poll.use_logo && @poll.logo.exists? %>
-    <div style="text-align:center;margin-top:10px;">
+    <div id="logo" style="text-align:center;margin-top:10px;">
       <img src="<%=@poll.logo.url%>">
     </div>
   <% end %>

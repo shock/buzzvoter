@@ -41,12 +41,12 @@ ActiveRecord::Schema.define(:version => 20091012035209) do
     t.string   "bg_image_content_type"
     t.integer  "bg_image_file_size"
     t.datetime "bg_image_updated_at"
-    t.boolean  "use_bg_image"
+    t.boolean  "use_bg_image",          :default => false
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.boolean  "use_logo"
+    t.boolean  "use_logo",              :default => false
   end
 
   create_table "users", :force => true do |t|

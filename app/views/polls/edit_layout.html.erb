@@ -4,13 +4,10 @@
 You can customize the appearance of your poll by changing the color scheme and adding a background and logo image below.
 </p>
 <p>
-Changes to colors will appear immediately but will not be saved until you click the "Save Changes" button.  Background and Logo images will not show up until you click "Save Changes".  
+Click the "Save Changes" button to save and view your new settings.
 </p>
 <p>
-To reset the colors back to their original settings, click the "Reset" link.  
-</p>
-<p>
-Clicking "Back" will return you to the poll without saving any current changes.
+Clicking "Back" will return you to the poll without saving your most recent changes.
 </p>
 </p>
 <hr/>
@@ -21,6 +18,7 @@ Clicking "Back" will return you to the poll without saving any current changes.
   <p>
     <%= f.submit 'Save Changes' %> | 
     <%= link_to 'Reset', "javascript:void(0);", :onclick=>'reset_layout();' %> | 
+    <%= link_to 'Defaults', "javascript:void(0);", :onclick=>'default_layout();' %> | 
     <%= link_to 'Back', @poll %>
   </p>
 <% end %>

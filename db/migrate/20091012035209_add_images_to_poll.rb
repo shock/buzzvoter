@@ -4,13 +4,13 @@ class AddImagesToPoll < ActiveRecord::Migration
     add_column :polls, :bg_image_content_type, :string
     add_column :polls, :bg_image_file_size,    :integer
     add_column :polls, :bg_image_updated_at,   :datetime
-    add_column :polls, :use_bg_image, :boolean
+    add_column :polls, :use_bg_image, :boolean, :default => false
 
     add_column :polls, :logo_file_name,    :string
     add_column :polls, :logo_content_type, :string
     add_column :polls, :logo_file_size,    :integer
     add_column :polls, :logo_updated_at,   :datetime
-    add_column :polls, :use_logo, :boolean
+    add_column :polls, :use_logo, :boolean, :default => false
 
   end
 
