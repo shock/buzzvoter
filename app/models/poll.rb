@@ -95,7 +95,7 @@ class Poll < ActiveRecord::Base
       abbreviations.each do |abbr|
         # puts "tweet.text #{tweet.text}"
         # puts "abbr #{abbr}"
-        if tweet.text.downcase =~ /(^|[\#\@ ])#{abbr.downcase} /
+        if tweet.text.downcase =~ /(^|[\#\@ ])#{abbr.downcase}[^\w]*/
           raise InvalidVoteError.new("It contains more than one valid answer.") if answer_abbr
           answer_abbr = abbr
         end
@@ -124,7 +124,7 @@ class Poll < ActiveRecord::Base
       send_vote_reply( vote )
       send_poll_results( vote ) if results_reply
       @new_results += 1
-
+      @voter_ids << tweet.from_user
     rescue InvalidVoteError
       send_error_reply( tweet, $!.to_s )
       # The users vote is invalid.  TODO: send a tweet back to them indicating the error.
@@ -141,6 +141,21 @@ class Poll < ActiveRecord::Base
     end
   end
   
+  def perform_reach_lookups
+    twitter = TyphoTwitter.new
+    puts "@voter_ids: #{@voters_ids.inspect}"
+    responses = twitter.get_users_records @voter_ids
+    new_reach = 0
+    responses.values.each do |user_record|
+      new_reach += user_record['followers_count']
+    end
+    puts "reach: #{reach}"
+    puts "new_reach: #{new_reach}"
+    current_reach = self.reach
+    self.reach = current_reach + new_reach
+    save!
+  end
+  
   # get the poll results from Twitter
   def get_results
     
@@ -149,6 +164,7 @@ class Poll < ActiveRecord::Base
     tweets = []
     base_errors = []
     last_date = nil
+    @voter_ids = []
     
     # searchterms = search_terms.gsub(" and ", " ").gsub("\r", "").split("\n").collect{|s| "("+s+")"}.join( " OR " )
     terms_set = search_terms.split("\n")
@@ -218,6 +234,7 @@ class Poll < ActiveRecord::Base
         raise $!
       end
     end
+    perform_reach_lookups
     update_attributes!( :last_updated => Time.zone.now, :status=>"completed", :seconds_to_execute=>Time.zone.now-start_time, :total_results=>@total_results, :new_results=>@new_results )
   end
   

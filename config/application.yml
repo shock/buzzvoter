@@ -40,7 +40,7 @@ beta:
 development: 
   :search: 
     :polling_interval_s:          5    # polling interval for new jobs
-    :ts_debug_level: 4
+    :ts_debug_level: 5
     :use_threading: false
     :minimum_search_interval_s:   10    # number of seconds that must pass before the same search can be executed again
 

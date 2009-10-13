@@ -262,3 +262,15 @@ a.button {
 a.button:hover{ color:#000; text-decoration: none; }
 .time_zone { margin-left: 8px; font-style: italic; font-size: 0.8em; }
 
+#tweet_reach {
+  font-size: 90%;
+  font-style: italic;
+}
+
+.hint a{
+  text-decoration: none;
+}
+.hint a:hover{
+  text-decoration: none;
+  color: inherit;
+}

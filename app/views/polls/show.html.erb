@@ -41,6 +41,11 @@
     <% end -%>
 </div>
 <br/>
+<div id='tweet_reach'>
+  Twitter Reach: 
+  <span class="hint"><a href="javscript:void(0)" title="The total number of folowers of all voters."><%=@poll.reach%></a><span>
+</div>
+<br/>
 <% if @poll.active? %>
 <p>
   <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);">

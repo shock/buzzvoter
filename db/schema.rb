@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091012035209) do
+ActiveRecord::Schema.define(:version => 20091013195153) do
 
   create_table "polls", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20091012035209) do
     t.boolean  "results_reply"
     t.string   "reply_message"
     t.integer  "user_id"
+    t.boolean  "closed"
     t.integer  "vote_count",            :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -41,12 +42,13 @@ ActiveRecord::Schema.define(:version => 20091012035209) do
     t.string   "bg_image_content_type"
     t.integer  "bg_image_file_size"
     t.datetime "bg_image_updated_at"
-    t.boolean  "use_bg_image",          :default => false
+    t.boolean  "use_bg_image"
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.boolean  "use_logo",              :default => false
+    t.boolean  "use_logo"
+    t.integer  "reach",                 :default => 0
   end
 
   create_table "users", :force => true do |t|
