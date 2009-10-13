@@ -42,8 +42,8 @@
 </div>
 <br/>
 <div id='tweet_reach'>
-  Twitter Reach: 
-  <span class="hint"><a href="javscript:void(0)" title="The total number of folowers of all voters."><%=@poll.reach%></a><span>
+  Twitter Reach: <%=@poll.reach%>
+  <span class="hint"><a href="javascript:void(0);" title="The total number of folowers of all voters." onclick="alert('Twitter Reach is the total number of folowers of all voters.');">what's this?</a><span>
 </div>
 <br/>
 <% if @poll.active? %>

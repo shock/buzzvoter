@@ -267,7 +267,10 @@ a.button:hover{ color:#000; text-decoration: none; }
   font-style: italic;
 }
 
+.hint {
+}
 .hint a{
+  font-size:75%;
   text-decoration: none;
 }
 .hint a:hover{
