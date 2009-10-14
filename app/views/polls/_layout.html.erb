@@ -41,9 +41,9 @@
     JQ('#text_cp').set_color(JQ('#text_color').val());
     JQ('#link_color').val('%=@poll.link_color%>');
     JQ('#link_cp').set_color(JQ('#link_color').val());
-    JQ("#poll_use_bg_image").attr('checked',<%=@poll.use_bg_image%>);
-    JQ("#poll_use_logo").attr('checked',<%=@poll.use_logo%>);
-    JQ("#poll_tile_bg_image").attr('checked',<%=@poll.tile_bg_image%>);
+    JQ("#poll_use_bg_image").attr('checked',<%=@poll.use_bg_image==true%>);
+    JQ("#poll_use_logo").attr('checked',<%=@poll.use_logo==true%>);
+    JQ("#poll_tile_bg_image").attr('checked',<%=@poll.tile_bg_image==true%>);
     JQ('body').css('backgroundImage',"url('<%=@poll.bg_image.url%>')");
     JQ('#logo').html('<img src="<%=@poll.logo.url%>">');
     set_colors_from_fields();
