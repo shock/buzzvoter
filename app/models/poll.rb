@@ -6,7 +6,7 @@ class Poll < ActiveRecord::Base
 
   named_scope :recent, lambda { |limit| 
     limit ||= 5
-      {:conditions => "", :limit=>limit, :order=>"created_at DESC"} 
+      {:conditions => {:is_enabled=>true}, :limit=>limit, :order=>"created_at DESC"} 
   }
   
   named_scope :active, :conditions =>"ending_time > \"#{Time.now.utc.to_s(:db)}\""

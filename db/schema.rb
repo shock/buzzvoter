@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091013195153) do
+ActiveRecord::Schema.define(:version => 20091014140328) do
 
   create_table "polls", :force => true do |t|
     t.string   "name"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20091013195153) do
     t.datetime "logo_updated_at"
     t.boolean  "use_logo"
     t.integer  "reach",                 :default => 0
+    t.boolean  "is_enabled",            :default => false
   end
 
   create_table "users", :force => true do |t|

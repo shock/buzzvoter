@@ -110,7 +110,7 @@ class PollsController < ApplicationController
     @poll = Poll.find_by_id_or_url(params[:id])
 
     respond_to do |format|
-      if params[:poll].keys.include?(:answer_names)
+      if params[:poll].keys.include?('answer_names')
         if @poll.update_from_form_fields(params[:poll])
           flash[:notice] = 'Poll was successfully updated.'
           format.html { redirect_to(@poll) }
@@ -118,6 +118,17 @@ class PollsController < ApplicationController
         else
           @answers = @poll.invalid_answers
           format.html { render :action => "edit" }
+          format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
+        end
+      elsif params[:poll].keys.include?('is_enabled')
+        if @poll.update_attributes(params[:poll])
+          flash[:notice] = 'Poll was successfully updated.'
+          format.html { redirect_to(@poll) }
+          format.xml  { head :ok }
+        else
+          @votes = []
+          @answers = @poll.get_answers_with_votes
+          format.html { render :action => "show" }
           format.xml  { render :xml => @poll.errors, :status => :unprocessable_entity }
         end
       else

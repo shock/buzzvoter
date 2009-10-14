@@ -269,11 +269,18 @@ a.button:hover{ color:#000; text-decoration: none; }
 
 .hint {
 }
+
 .hint a{
   font-size:75%;
   text-decoration: none;
 }
+
 .hint a:hover{
   text-decoration: none;
   color: inherit;
 }
+
+.warning, .notice { color: white; padding: 4px; margin-top:5px; margin-bottom: 5px;}
+.warning { background: #AAAA00 }
+.notice { background: #00AA00 }
+.warning input, .notice input { font-size: 10px; }

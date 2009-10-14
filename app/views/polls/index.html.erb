@@ -16,15 +16,19 @@
     <td><%=h poll.url %></td>
     <td><%= poll.winners_as_text %></td>
     <td>
-      <% if poll.active? %>
-      Closes in <%=h distance_of_time_in_words_to_now poll.ending_time %>
+      <% if !poll.is_enabled? %>
+        Disabled
       <% else %>
-      Closed.
+        <% if poll.active? %>
+        Closes in <%=h distance_of_time_in_words_to_now poll.ending_time %>
+        <% else %>
+        Closed.
+        <% end -%>
       <% end -%>
     </td>
-    <td><%= link_to 'Show Poll', poll %></td>
-    <td><%= link_to 'Edit Poll', edit_poll_path(poll) %></td>
-    <td><%= link_to 'Customize Appearance',  url_for({:controller=>:polls, :action=>:edit_layout, :id=>poll.id})  %></td>
+    <td><%= link_to 'Show', poll %></td>
+    <!-- <td><%= link_to 'Edit Poll', edit_poll_path(poll) %></td>
+    <td><%= link_to 'Customize Appearance',  url_for({:controller=>:polls, :action=>:edit_layout, :id=>poll.id})  %></td> -->
     <td><%= link_to 'Delete', poll, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

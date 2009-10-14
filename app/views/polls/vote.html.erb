@@ -1,70 +1,74 @@
-<h1>
-  VOTE: <%=h @poll.name %>
-</h1>
-<p>
-  <% if @poll.active? %>
-    <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
-    <p><%= link_to 'See Current Results', url_for(:action=>"show", :id=>@poll.id)  %></p>
-  <% else %>
-    <div class="poll_ending">This poll has closed.</div>
-    <% if @poll.winners.length > 1 %>
-      <h2>Final Winners: <%= @poll.winners_as_text %></h2>
-    <% else %>
-      <h2>Final Winner: <%= @poll.winners_as_text %></h2>
-    <% end -%>
-  <% end -%>
-</p>
-
-<hr/>
-<% if @poll.active? %>
-<h3>VOTE BY FORM</h3>
-<p>Login to Twitter.com and select your choice below, then click the <b>VOTE</b> button. You will be taken to your Twitter homepage with your vote already filled in.  Click <b>UPDATE</b> there to cast your vote.</p>
-  <p style="font-size:105%">
-    <b>Q: </b><%=h @poll.question %>
-  </p>
-  <ul>
-    <div class="table" style="width:80%">
-    <% @answers.each do |answer_record| %>
-      <div class="tr">
-        <div class="td"><%= radio_button_tag "answer", answer_record[:abbr] %><%= answer_record[:name] %></div>
-        <div class="td">short answer: <strong><%=answer_record[:abbr] %></strong></div>
-      </div>
-    <% end -%>
-    </div>
-  </ul>
-  <a href="javascript:void(0);" onclick="return submitVote(this);" target="_blank" class="button">VOTE</a><br/><br/>
-  <hr/>
-  <h3>OR VOTE DIRECTLY THROUGH TWITTER</h3>
-  <p>To vote from any Twitter client, just send a Tweet with the tags <strong>#vote</strong>, <strong><%= @poll.poll_tag %></strong> and the short answer of your poll choice (see above).</p>
-  <p> Example: "I just cast my <strong>#vote</strong> for <strong><%=@answers.first[:abbr]%></strong> on BuzzVoter.com <strong><%= @poll.poll_tag %></strong>"
-  </p>
-  <hr/>
+<% if !@poll.is_enabled? %>
+  <%= render :partial=>'disabled' %>
+<% else %>
+  <h1>
+    VOTE: <%=h @poll.name %>
+  </h1>
   <p>
-  Thanks for participating.</p><p>
-  You will receive a confirmation tweet from us when we receive your vote.
+    <% if @poll.active? %>
+      <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
+      <p><%= link_to 'See Current Results', url_for(:action=>"show", :id=>@poll.id)  %></p>
+    <% else %>
+      <div class="poll_ending">This poll has closed.</div>
+      <% if @poll.winners.length > 1 %>
+        <h2>Final Winners: <%= @poll.winners_as_text %></h2>
+      <% else %>
+        <h2>Final Winner: <%= @poll.winners_as_text %></h2>
+      <% end -%>
+    <% end -%>
   </p>
-  <script>
 
-    function createTweet(answer) {
-      tweet = "<%= @poll.generated_vote_tweet %>";
-      tweet = tweet.replace( "#ANSWER#", answer );
-      return tweet;
-    }
+  <hr/>
+  <% if @poll.active? %>
+  <h3>VOTE BY FORM</h3>
+  <p>Login to Twitter.com and select your choice below, then click the <b>VOTE</b> button. You will be taken to your Twitter homepage with your vote already filled in.  Click <b>UPDATE</b> there to cast your vote.</p>
+    <p style="font-size:105%">
+      <b>Q: </b><%=h @poll.question %>
+    </p>
+    <ul>
+      <div class="table" style="width:80%">
+      <% @answers.each do |answer_record| %>
+        <div class="tr">
+          <div class="td"><%= radio_button_tag "answer", answer_record[:abbr] %><%= answer_record[:name] %></div>
+          <div class="td">short answer: <strong><%=answer_record[:abbr] %></strong></div>
+        </div>
+      <% end -%>
+      </div>
+    </ul>
+    <a href="javascript:void(0);" onclick="return submitVote(this);" target="_blank" class="button">VOTE</a><br/><br/>
+    <hr/>
+    <h3>OR VOTE DIRECTLY THROUGH TWITTER</h3>
+    <p>To vote from any Twitter client, just send a Tweet with the tags <strong>#vote</strong>, <strong><%= @poll.poll_tag %></strong> and the short answer of your poll choice (see above).</p>
+    <p> Example: "I just cast my <strong>#vote</strong> for <strong><%=@answers.first[:abbr]%></strong> on BuzzVoter.com <strong><%= @poll.poll_tag %></strong>"
+    </p>
+    <hr/>
+    <p>
+    Thanks for participating.</p><p>
+    You will receive a confirmation tweet from us when we receive your vote.
+    </p>
+    <script>
+
+      function createTweet(answer) {
+        tweet = "<%= @poll.generated_vote_tweet %>";
+        tweet = tweet.replace( "#ANSWER#", answer );
+        return tweet;
+      }
   
-    function submitVote(el) {
-      var selected_answer = JQ("input:radio[@name='answer']:checked");
-      if( selected_answer.length < 1 )
-      {
-        alert( "Please select an answer." );
-        return false;
+      function submitVote(el) {
+        var selected_answer = JQ("input:radio[@name='answer']:checked");
+        if( selected_answer.length < 1 )
+        {
+          alert( "Please select an answer." );
+          return false;
+        }
+        else
+        {
+          var answer = selected_answer.val();
+          var location = "http://twitter.com/?status="+escape(createTweet(answer));
+          JQ(el).attr("href",location);
+          return true;
+        }
       }
-      else
-      {
-        var answer = selected_answer.val();
-        var location = "http://twitter.com/?status="+escape(createTweet(answer));
-        JQ(el).attr("href",location);
-        return true;
-      }
-    }
-  </script>
+    </script>
+  <% end -%>
 <% end -%>

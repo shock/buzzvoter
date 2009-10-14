@@ -1,71 +1,92 @@
-<h1>
-  <%=h @poll.name %>
-</h1>
-<p>
-  <% if @poll.active? %>
-  <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
-  <% if @poll.winners.length > 1 %>
-    <h2>Current Winners: <%= @poll.winners_as_text %></h2>
-  <% else %>
-    <h2>Current Winner: <%= @poll.winners_as_text %></h2>
-  <% end -%>
-  <% else %>
-  <div class="poll_ending">This poll has closed.</div>
-  <% if @poll.winners.length > 1 %>
-    <h2>Final Winners: <%= @poll.winners_as_text %></h2>
-  <% else %>
-    <h2>Final Winner: <%= @poll.winners_as_text %></h2>
-  <% end -%>
-  <% end -%>
-</p>
-<hr/>
-<p style="font-size:105%">
-  <h3>Q: <%=h @poll.question %></h3>
-</p>
-
-<div class="table" style="width:100%">
-  <div class="tr">
-    <div class="th">Answer</div>
-    <div class="th" style="text-align:center">Votes</div>
-    <div class="th" style="text-align:center">Percentage</div>
-  </div>
-    <% i = 0 %>
-    <% @answers.each do |answer_record| %>
-    <div class="tr">
-      <div class="td"><%= answer_record[:name] %></div>
-      <div class="td" style="text-align:center"><%= answer_record[:num_votes] %></div>
-      <div class="td" style="text-align:center"><%= answer_record[:percentage] %></div>
-      <div class="td" style="text-align:center"><a href="http://search.twitter.com/search?q=<%= CGI.escape("#vote #{@poll.poll_tag} #{answer_record[:abbr]}") %>" target="_blank">votes</a></div>
+<% if !@poll.is_enabled? && (!current_user || current_user.id != @poll.user_id) %>
+  <%= render :partial=>'disabled' %>
+<% else %>
+  <h1>
+    <%=h @poll.name %>
+  </h1>
+  <% if !@poll.is_enabled? %>
+    <div class="warning">
+      <% form_for(@poll) do |f| %>
+      Poll is disabled.
+        <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
+        <%= f.submit( 'Enable Poll', :onclick=>"JQ('#is_enabled').val(1);return true" ) %>
+      <% end %>
     </div>
-    <% i += 1 %>
-    <% end -%>
-</div>
-<br/>
-<div id='tweet_reach'>
-  Twitter Reach: <%=@poll.reach%>
-  <span class="hint"><a href="javascript:void(0);" title="The total number of folowers of all voters." onclick="alert('Twitter Reach is the total number of folowers of all voters.');">what's this?</a><span>
-</div>
-<br/>
-<% if @poll.active? %>
-<p>
-  <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);">
-    CAST YOUR VOTE
-  </a>
-</p>
-<% end -%>
-<% if current_user && current_user.id == @poll.user_id %>
-<br/><hr/>
-<p>
-  <h3>Manage Your Poll</h3>
-  <%= link_to 'Change Poll', edit_poll_path(@poll) %> |
-  <%= link_to 'Customize Appearance', url_for({:controller=>:polls, :action=>:edit_layout, :id=>@poll.id}) %> |
-  <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
-  Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
-  <% if @poll.active? %>
-    <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
   <% else %>
-    <a href="<%=h "http://twitter.com/?status="+CGI.escape("Check out the results of the #{@poll.name} poll at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About The Results</a><br/><br/>
+    <div class="notice">
+      <% form_for(@poll, :onsubmit=>"JQ('#is_enabled').val(0);return true") do |f| %>
+      Poll is enabled.
+        <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
+        <%= f.submit( 'Disable Poll', :onclick=>"JQ('#is_enabled').val(0);return true" ) %>
+      <% end %>
+    </div>
   <% end -%>
-  <%= link_to 'Back', url_for(:action=>"index")  %><br/>
-</p>
+  <p>
+    <% if @poll.active? %>
+      <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
+      <% if @poll.winners.length > 1 %>
+        <h2>Current Winners: <%= @poll.winners_as_text %></h2>
+      <% else %>
+        <h2>Current Winner: <%= @poll.winners_as_text %></h2>
+      <% end -%>
+    <% else %>
+      <div class="poll_ending">This poll has closed.</div>
+      <% if @poll.winners.length > 1 %>
+        <h2>Final Winners: <%= @poll.winners_as_text %></h2>
+      <% else %>
+        <h2>Final Winner: <%= @poll.winners_as_text %></h2>
+      <% end -%>
+    <% end -%>
+  </p>
+  <hr/>
+  <p style="font-size:105%">
+    <h3>Q: <%=h @poll.question %></h3>
+  </p>
+
+  <div class="table" style="width:100%">
+    <div class="tr">
+      <div class="th">Answer</div>
+      <div class="th" style="text-align:center">Votes</div>
+      <div class="th" style="text-align:center">Percentage</div>
+    </div>
+      <% i = 0 %>
+      <% @answers.each do |answer_record| %>
+      <div class="tr">
+        <div class="td"><%= answer_record[:name] %></div>
+        <div class="td" style="text-align:center"><%= answer_record[:num_votes] %></div>
+        <div class="td" style="text-align:center"><%= answer_record[:percentage] %></div>
+        <div class="td" style="text-align:center"><a href="http://search.twitter.com/search?q=<%= CGI.escape("#vote #{@poll.poll_tag} #{answer_record[:abbr]}") %>" target="_blank">votes</a></div>
+      </div>
+      <% i += 1 %>
+      <% end -%>
+  </div>
+  <br/>
+  <div id='tweet_reach'>
+    Twitter Reach: <%=@poll.reach%>
+    <span class="hint"><a href="javascript:void(0);" title="The total number of folowers of all voters." onclick="alert('Twitter Reach is the total number of folowers of all voters.');">what's this?</a><span>
+  </div>
+  <br/>
+  <% if @poll.active? %>
+  <p>
+    <a href="<%=url_for(:action=>"vote", :id=>@poll.id) %>" onclick="return submitVote(this);">
+      CAST YOUR VOTE
+    </a>
+  </p>
+  <% end -%>
+  <% if current_user && current_user.id == @poll.user_id %>
+  <br/><hr/>
+  <p>
+    <h3>Manage Your Poll</h3>
+    <%= link_to 'Change Poll', edit_poll_path(@poll) %> |
+    <%= link_to 'Customize Appearance', url_for({:controller=>:polls, :action=>:edit_layout, :id=>@poll.id}) %> |
+    <%= link_to 'Delete', @poll, :confirm => 'Are you sure?', :method => :delete %><br/><br/>
+    Poll URL: <a href="<%= @poll.fq_url %>"><%= @poll.fq_url %></a><br/><br/>
+    <% if @poll.active? %>
+      <a href="<%=h "http://twitter.com/?status="+CGI.escape("I just created a new poll. Please vote at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About This Poll</a><br/><br/>
+    <% else %>
+      <a href="<%=h "http://twitter.com/?status="+CGI.escape("Check out the results of the #{@poll.name} poll at #{@poll.fq_url} #{@poll.poll_tag}") %>" target="_blank">Tweet About The Results</a><br/><br/>
+    <% end -%>
+    <%= link_to 'Back', url_for(:action=>"index")  %><br/>
+  </p>
+  <% end -%>
 <% end -%>
