@@ -4,22 +4,24 @@
   <h1>
     <%=h @poll.name %>
   </h1>
-  <% if !@poll.is_enabled? %>
-    <div class="warning">
-      <% form_for(@poll) do |f| %>
-      Poll is disabled.
-        <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
-        <%= f.submit( 'Enable Poll', :onclick=>"JQ('#is_enabled').val(1);return true" ) %>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="notice">
-      <% form_for(@poll, :onsubmit=>"JQ('#is_enabled').val(0);return true") do |f| %>
-      Poll is enabled.
-        <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
-        <%= f.submit( 'Disable Poll', :onclick=>"JQ('#is_enabled').val(0);return true" ) %>
-      <% end %>
-    </div>
+  <% if current_user && current_user.id == @poll.user_id %>
+    <% if !@poll.is_enabled? %>
+      <div class="warning">
+        <% form_for(@poll) do |f| %>
+        Poll is disabled.
+          <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
+          <%= f.submit( 'Enable Poll', :onclick=>"JQ('#is_enabled').val(1);return true" ) %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="notice">
+        <% form_for(@poll, :onsubmit=>"JQ('#is_enabled').val(0);return true") do |f| %>
+        Poll is enabled.
+          <%= f.hidden_field :is_enabled, :id=>"is_enabled" %>
+          <%= f.submit( 'Disable Poll', :onclick=>"JQ('#is_enabled').val(0);return true" ) %>
+        <% end %>
+      </div>
+    <% end -%>
   <% end -%>
   <p>
     <% if @poll.active? %>
