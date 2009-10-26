@@ -9,7 +9,7 @@
       <div class="poll_ending">Poll closes in <%=h distance_of_time_in_words_to_now @poll.ending_time %></div>
       <p><%= link_to 'See Current Results', url_for(:action=>"show", :id=>@poll.id)  %></p>
     <% else %>
-      <div class="poll_ending">This poll has closed.</div>
+      <div class="poll_ending">This poll closed <%=h distance_of_time_in_words_to_now @poll.ending_time %> ago.</div>
       <% if @poll.winners.length > 1 %>
         <h2>Final Winners: <%= @poll.winners_as_text %></h2>
       <% else %>

@@ -32,7 +32,7 @@
         <h2>Current Winner: <%= @poll.winners_as_text %></h2>
       <% end -%>
     <% else %>
-      <div class="poll_ending">This poll has closed.</div>
+      <div class="poll_ending">This poll closed <%=h distance_of_time_in_words_to_now @poll.ending_time %> ago.</div>
       <% if @poll.winners.length > 1 %>
         <h2>Final Winners: <%= @poll.winners_as_text %></h2>
       <% else %>

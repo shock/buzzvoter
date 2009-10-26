@@ -6,7 +6,7 @@ class Poll < ActiveRecord::Base
 
   named_scope :recent, lambda { |limit| 
     limit ||= 5
-      {:conditions => {:is_enabled=>true}, :limit=>limit, :order=>"created_at DESC"} 
+      {:conditions => {:is_enabled=>true}, :limit=>limit, :order=>"ending_time DESC"} 
   }
   
   named_scope :active, :conditions =>"ending_time > \"#{Time.now.utc.to_s(:db)}\""
@@ -14,7 +14,8 @@ class Poll < ActiveRecord::Base
   
   validates_presence_of :answers, :url, :poll_tag
   validates_uniqueness_of :url, :poll_tag
-  
+  validates_format_of :poll_tag, :with => /^[^\w]?\w*$/, :on => :save, :message=>'can only have one term with no spaces'
+
   TEST_MODE = false
   
   private
