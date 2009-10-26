@@ -52,9 +52,8 @@ class Tweeter
   end
   
   def status_update( text, in_reply_to_status_id=nil )
-    if $APP_CONFIG[:twitter][:stub_tweets]
-      logger.info("TWEET: #{text}")
-    else
+    logger.info("TWEET: #{text}")
+    if !$APP_CONFIG[:twitter][:stub_tweets]
       update( text, in_reply_to_status_id )
     end
   end

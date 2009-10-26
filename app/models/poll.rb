@@ -95,7 +95,7 @@ class Poll < ActiveRecord::Base
       abbreviations.each do |abbr|
         # puts "tweet.text #{tweet.text}"
         # puts "abbr #{abbr}"
-        if tweet.text.downcase =~ /(^|[\#\@ ])#{abbr.downcase}[^\w]*/
+        if CGI.unescape(tweet.text.downcase) =~ /(^|[^\w])#{abbr.downcase}[^\w]*/
           raise InvalidVoteError.new("It contains more than one valid answer.") if answer_abbr
           answer_abbr = abbr
         end

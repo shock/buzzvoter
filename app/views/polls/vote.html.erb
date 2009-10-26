@@ -49,7 +49,7 @@
     <script>
 
       function createTweet(answer) {
-        tweet = "<%= @poll.generated_vote_tweet %>";
+        tweet = "<%= escape_javascript(@poll.generated_vote_tweet) %>";
         tweet = tweet.replace( "#ANSWER#", answer );
         return tweet;
       }
